@@ -23,11 +23,17 @@ class Nodo(object):
     def inverse_cmp(self,otro):
         return -self.__cmp__(otro)
         
+class Arista(object):
+    def __init__(self,peso):
+        self.peso=peso
+    def peso(self):
+        return self.peso
+
 class Grafo(object):
 
     def __init__(self):
         """Crea un Grafo no dirigido con aristas sin peso"""
-        self.vertices = {}
+        self.aristas = {}
         self.nodos = {}
         self.nombres ={}
 
@@ -41,35 +47,49 @@ class Grafo(object):
 
     def borrar_vertice(self,ID):
         """Borra un vertice que se identifica con ID (si tiene aristas asociadas levanta ValueError"""
-        if(self.nombres.has_key(ID) and  len(self.vertices[ID]) == 0):
+        if(self.nombres.has_key(ID) and  len(self.aristas[ID]) == 0):
             self.nodos.pop(self.nombres[ID])
             self.nombres.pop(ID)
-            self.vertices.pop(ID)
+            self.aristas.pop(ID)
         raise ValueError
 
-    def borrar_arista(self,id1,id2):
+    def borrar_arista_no_dirigida(self,id1,id2):
         """Borra una arista entre id1 y id2 (si no existe devuelve error)"""
-        if(vertices[id1].has_key(id2)):
-            self.vertices[id1].remove(id2)
-            self.vertices[id2].remove(id1)
+        if(aristas[id1].has_key(id2)):
+            self.aristas[id1].remove(id2)
+	elif (aristas[id2].has_key(id1)):
+            self.aristas[id2].remove(id1)
         raise ValueError
-        
+
+    def borrar_arista_dirigida(self,id1,id2):
+        """Borra una arista entre id1 y id2 (si no existe devuelve error)"""
+        if(aristas[id1].has_key(id2)):
+            self.aristas[id1].remove(id2)
+        raise ValueError
 
     def agregar_vertice(self,nombre,ID):
         """Agrega un vertice que se identifica con un nombre y un ID"""
         self.nodos[nombre] = ID
         self.nombres[ID]=nombre
-        self.vertices[ID] = {}
+        self.aristas[ID] = {}
 
-    def agregar_arista(self,id1,id2):
+    def agregar_arista_no_dirigida(self,id1,id2,peso=0):
         """Agrego una arista sin peso entre los nodos con id1 y id2"""
-        self.vertices[id1][id2] = True
-        self.vertices[id2][id1] = True
+        self.aristas[id1][id2] = Arista(peso)
+        self.aristas[id2][id1] = Arista(peso)
+
+    def agregar_arista_dirigida(self,id1,id2,peso=0):
+        """Agrego una arista sin peso entre los nodos con id1 y id2"""
+        self.aristas[id1][id2] = Arista(peso)
 
     def son_vecinos(self,id1,id2):
         """Devuelve si id1 y id2 son vecinos """
-        return (id2 in self.vertices[id1].keys())#Azucar sintactico
+        return (id2 in self.aristas[id1].keys())#Azucar sintactico
 
+    def peso_arista(self,id1,id2):
+	if(self.son_vecinos(id1,id2)):
+		return self.aristas[id1][id2].peso
+	raise ValueError
     def leer(self,nombre):
         """Lee un archivo con nombre """
         try:            
@@ -96,7 +116,7 @@ class Grafo(object):
         """Realiza un recorrido DFS"""
         visitado[actual] = True
         lista.append(actual)
-        for ID_ady in self.vertices[self.nodos[actual]].keys():
+        for ID_ady in self.aristas[self.nodos[actual]].keys():
             ady=self.nombres[ID_ady]
             if(visitado[ady] == False):
                 padre[ady] = actual
@@ -133,7 +153,7 @@ class Grafo(object):
         if(limite==INFINITO): l.append(nombre)
         while not c.esta_vacia():
             actual = c.desencolar()
-            for ID_ady in self.vertices[self.nodos[actual]].keys():
+            for ID_ady in self.aristas[self.nodos[actual]].keys():
                 ady=self.nombres[ID_ady]
                 if(visitado[ady] == False):
                     distancia[ady] = distancia[actual] + 1;
@@ -160,7 +180,7 @@ class Grafo(object):
                 visitado[nombre]=True
                 padre[nombre]=nodo.padre
                 distancia[nombre]=nodo.distancia
-                for ID_ady in self.vertices[self.nodos[nombre]].keys():
+                for ID_ady in self.aristas[self.nodos[nombre]].keys():
                     ady= self.nombres[ID_ady]
                     nodo_nuevo=Nodo(ady,distancia[nombre]+1,nombre)    
                     heapq.heappush(heap,nodo_nuevo)
