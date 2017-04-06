@@ -7,7 +7,7 @@ if(len(sys.argv)<2):
 print "Archivo a leer" ,sys.argv[1]
 g=Grafo()
 g.leer(sys.argv[1])
-ve= g.devolver_nodos()
+ve= g.devolver_vertices()
 print "vertices" ,ve
 ar= g.devolver_aristas()
 print "aristas",len(ar)

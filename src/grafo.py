@@ -1,28 +1,8 @@
-CERO = 0
+
+
 PRIMERO = 0
 SEGUNDO = 1
-
-INFINITO = float("inf")  # Truco magico de python none <any int, <any string
-
-
-class Nodo(object):
-
-    def __init__(self, ID, distancia, padre=None):
-        self.nombre = ID
-        self.distancia = distancia
-        self.padre = padre  # TODO: Esto no es medio turbio? jajaj 
-        # Esta clase nodo es para el djistra
-
-    def __cmp__(self, otro):
-        if(self.distancia == otro.distancia):
-            return 0
-        if(self.distancia > otro.distancia):
-            return 1
-        return -1
-
-    def inverse_cmp(self, otro):
-        return -self.__cmp__(otro)
-
+# Yo a la clase Arista tal vez haria que tenga src y dst, y despues en el grafo la manejo como una lista de aristas en vez de como un hash
 
 class Arista(object):
 
@@ -30,24 +10,17 @@ class Arista(object):
         self.id1=id1
         self.id2=id2
         self.peso = peso
-
     def peso(self):
         return self.peso
     def __str__(self):
         return  str(self.id1) +" a " + str(self.id2) + ",peso "+ str(self.peso)
 
 class Grafo(object):
-
     def __init__(self):
         """Crea un Grafo dirigido (o no) con aristas pesadas (o no)"""
         self.aristas = {}
-        self.nodos = {}
-        self.nombres = {}
-
-    def devolver_nodos(self):
-        """Devuelve los nodos del grafo"""
-        return self.nodos.keys()
-    
+        self.vertices = []
+        
     def devolver_aristas(self):
         """Devuelve las aristas del grafo"""
         lista_aristas=[]
@@ -56,17 +29,21 @@ class Grafo(object):
                 lista_aristas+=[aristas]
         return lista_aristas
 
-    def existe_nodo(self, nombre):
+    def devolver_vertices(self):
+	return self.vertices
+
+    def devolver_cant_vertices(self):
+        """Devuelve los nodos del grafo"""
+        return len(self.vertices)
+
+    def existe_nodo(self, ID):
         """Devuelve True si existe el nodo"""
-        return (nombre in self.nodos.keys())
+        return (ID in self.vertices)
 
     def borrar_vertice(self, ID):
         """Borra un vertice que se identifica con ID (si tiene aristas asociadas levanta ValueError)"""
-        """ TODO: Sino hacer que elimine todas las aristas y despufs el nodo?"""
-        #Si lo queres programar...
-        if (self.nombres.has_key(ID) and len(self.aristas[ID]) == 0):
-            self.nodos.pop(self.nombres[ID])
-            self.nombres.pop(ID)
+        if (self.existe_nodo(ID) and len(self.aristas[ID]) == 0):
+            self.vertices.remove(ID)
             self.aristas.pop(ID)
         else:
             raise ValueError
@@ -83,18 +60,17 @@ class Grafo(object):
         else:
             raise ValueError
 
-    def agregar_vertice(self, nombre, ID):
+    def agregar_vertice(self, ID):
         """Agrega un vertice que se identifica con un nombre y un ID"""
-        self.nodos[nombre] = ID
-        self.nombres[ID] = nombre
+        self.vertices.append(ID)
         self.aristas[ID] = {}
 
-    def agregar_arista_no_dirigida(self, id1, id2, peso=0):
+    def agregar_arista_no_dirigida(self, id1, id2, peso = 0):
         """Agrego una arista no dirigida entre los nodos con id1 y id2"""
         self.agregar_arista_dirigida(id1, id2, peso)
         self.agregar_arista_dirigida(id2, id1, peso)
 
-    def agregar_arista_dirigida(self, id1, id2, peso=0):
+    def agregar_arista_dirigida(self, id1, id2, peso = 0):
         """Agrego una arista dirigida entre los nodos con id1 y id2"""
         self.aristas[id1][id2] = Arista(id1, id2, peso)
 
@@ -103,26 +79,27 @@ class Grafo(object):
         return (id2 in self.aristas[id1].keys())  # Azucar sintactico
 
     def peso_arista(self, id1, id2):
-        if(self.son_vecinos(id1, id2)):
+        """Devuelve el peso de la arista entre id1 e id2"""
+        if(self.son_vecinos(id1,id2)):
             return self.aristas[id1][id2].peso
         raise ValueError
 
     def leer(self, nombre):
         """Lee un archivo con nombre"""  # TODO: Puede que haya que modificar esto para leer el archivo DONE
         try:
-            miArch = open(nombre)
-            cant_nodos = int(miArch.readline())
-            for i in range(0, cant_nodos):
-                self.agregar_vertice(i, i)
-            cant_aristas = int(miArch.readline())
-            for i in range(0, cant_aristas):
-                linea = miArch.readline()
-                numeros = linea.split(" ")
-                numeros[SEGUNDO] = numeros[SEGUNDO].rstrip('\n')
-                self.agregar_arista_dirigida(int(numeros[PRIMERO]),int (numeros[SEGUNDO]))
-            miArch.close()
-            return True
-        except:
+		miArch = open(nombre)
+	        cant_nodos = int(miArch.readline())
+	        for i in range(0, cant_nodos):
+		        self.agregar_vertice( i)
+	        cant_aristas = int(miArch.readline())
+	        for i in range(0, cant_aristas):
+		        linea = miArch.readline()
+	                numeros = linea.split(" ")
+	                numeros[SEGUNDO] = numeros[SEGUNDO].rstrip('\n')
+	                self.agregar_arista_dirigida(int(numeros[PRIMERO]),int (numeros[SEGUNDO]))
+	        miArch.close()
+	        return True
+	except:
             print "Ocurrio un error leyendo el archivo"
             return False
 
@@ -130,11 +107,10 @@ class Grafo(object):
         """Realiza un recorrido DFS"""
         visitado[actual] = True
         lista.append(actual)
-        for ID_ady in self.aristas[self.nodos[actual]].keys():
-            ady = self.nombres[ID_ady]
-            if(visitado[ady] == False):
-                padre[ady] = actual
-                self._DFS_Visitar(ady, visitado, padre, lista)
+        for ID_ady in self.aristas[actual].keys():
+            if(visitado[ID_ady] == False):
+                padre[ID_ady] = actual
+                self._DFS_Visitar(ID_ady, visitado, padre, lista)
 
     def DFS(self, nombre):
         """Hace un recorrido DFS desde un nombre """
@@ -148,8 +124,9 @@ class Grafo(object):
         visitado = {}
         distancia = {}
         padre = {}
-        for actual in self.nodos.keys():
+        for actual in range(0, cantVertices):
             visitado[actual] = False
             distancia[actual] = INFINITO
             padre[actual] = None
         return visitado, padre, distancia
+
