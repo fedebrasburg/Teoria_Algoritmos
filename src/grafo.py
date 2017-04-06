@@ -1,28 +1,40 @@
-CERO=0
-PRIMERO=1
-SEGUNDO=2
+CERO = 0
+PRIMERO = 0
+SEGUNDO = 1
 
-INFINITO = float("inf") # Truco magico de python none <any int, <any string
+INFINITO = float("inf")  # Truco magico de python none <any int, <any string
+
 
 class Nodo(object):
-    def __init__(self,ID,distancia,padre=None):
-        self.nombre=ID
-        self.distancia=distancia
-        self.padre=padre # TODO: Esto no es medio turbio? jajaj
-    def __cmp__(self,otro):
-        if(self.distancia==otro.distancia):
+
+    def __init__(self, ID, distancia, padre=None):
+        self.nombre = ID
+        self.distancia = distancia
+        self.padre = padre  # TODO: Esto no es medio turbio? jajaj 
+        # Esta clase nodo es para el djistra
+
+    def __cmp__(self, otro):
+        if(self.distancia == otro.distancia):
             return 0
-        if(self.distancia>otro.distancia):
+        if(self.distancia > otro.distancia):
             return 1
         return -1
-    def inverse_cmp(self,otro):
+
+    def inverse_cmp(self, otro):
         return -self.__cmp__(otro)
-        
+
+
 class Arista(object):
-    def __init__(self,peso):
-        self.peso=peso
+
+    def __init__(self,id1,id2, peso):
+        self.id1=id1
+        self.id2=id2
+        self.peso = peso
+
     def peso(self):
         return self.peso
+    def __str__(self):
+        return  str(self.id1) +" a " + str(self.id2) + ",peso "+ str(self.peso)
 
 class Grafo(object):
 
@@ -30,101 +42,105 @@ class Grafo(object):
         """Crea un Grafo dirigido (o no) con aristas pesadas (o no)"""
         self.aristas = {}
         self.nodos = {}
-        self.nombres ={}
+        self.nombres = {}
 
     def devolver_nodos(self):
         """Devuelve los nodos del grafo"""
         return self.nodos.keys()
+    
+    def devolver_aristas(self):
+        """Devuelve las aristas del grafo"""
+        lista_aristas=[]
+        for dic_aristas in self.aristas.values():
+            for aristas in dic_aristas.values():
+                lista_aristas+=[aristas]
+        return lista_aristas
 
-    def existe_nodo(self,nombre):
+    def existe_nodo(self, nombre):
         """Devuelve True si existe el nodo"""
         return (nombre in self.nodos.keys())
 
-    # TODO: En estos 3 métodos de borrar, el raise no iría en un else, ya que así lanza la execpción siempre? Pregunto, no sé cómo lo maneja Python jajaj
-    def borrar_vertice(self,ID):
+    def borrar_vertice(self, ID):
         """Borra un vertice que se identifica con ID (si tiene aristas asociadas levanta ValueError)"""
-        # TODO: Sino hacer que elimine todas las aristas y después el nodo?
+        """ TODO: Sino hacer que elimine todas las aristas y despufs el nodo?"""
+        #Si lo queres programar...
         if (self.nombres.has_key(ID) and len(self.aristas[ID]) == 0):
             self.nodos.pop(self.nombres[ID])
             self.nombres.pop(ID)
             self.aristas.pop(ID)
-        raise ValueError
+        else:
+            raise ValueError
 
-    def borrar_arista_no_dirigida(self,id1,id2):
+    def borrar_arista_no_dirigida(self, id1, id2):
         """Borra una arista entre id1 y id2 (si no existe devuelve error)"""
-        if (aristas[id1].has_key(id2)):
-            self.aristas[id1].remove(id2)
-        elif (aristas[id2].has_key(id1)): # TODO: No debería ser un if directamente, en vez de elif? Porque eliminaría una sola de las 2 así
-            self.aristas[id2].remove(id1)
-        raise ValueError
+        self.borrar_arista_dirigida(id1,id2)
+        self.borrar_arista_dirigida(id2,id1)
 
-    def borrar_arista_dirigida(self,id1,id2):
+    def borrar_arista_dirigida(self, id1, id2):
         """Borra una arista entre id1 y id2 (si no existe devuelve error)"""
-        if(aristas[id1].has_key(id2)):
-            self.aristas[id1].remove(id2)
-        raise ValueError
+        if(self.aristas[id1].has_key(id2)):
+            self.aristas[id1].pop(id2)
+        else:
+            raise ValueError
 
-    def agregar_vertice(self,nombre,ID):
+    def agregar_vertice(self, nombre, ID):
         """Agrega un vertice que se identifica con un nombre y un ID"""
         self.nodos[nombre] = ID
-        self.nombres[ID]=nombre
+        self.nombres[ID] = nombre
         self.aristas[ID] = {}
 
-    def agregar_arista_no_dirigida(self,id1,id2,peso=0):
+    def agregar_arista_no_dirigida(self, id1, id2, peso=0):
         """Agrego una arista no dirigida entre los nodos con id1 y id2"""
-        self.aristas[id1][id2] = Arista(peso)
-        self.aristas[id2][id1] = Arista(peso)
+        self.agregar_arista_dirigida(id1, id2, peso)
+        self.agregar_arista_dirigida(id2, id1, peso)
 
-    def agregar_arista_dirigida(self,id1,id2,peso=0):
+    def agregar_arista_dirigida(self, id1, id2, peso=0):
         """Agrego una arista dirigida entre los nodos con id1 y id2"""
-        self.aristas[id1][id2] = Arista(peso)
+        self.aristas[id1][id2] = Arista(id1, id2, peso)
 
-    def son_vecinos(self,id1,id2):
+    def son_vecinos(self, id1, id2):
         """Devuelve si id1 y id2 son vecinos"""
-        return (id2 in self.aristas[id1].keys())#Azucar sintactico
+        return (id2 in self.aristas[id1].keys())  # Azucar sintactico
 
-    def peso_arista(self,id1,id2):
-        if(self.son_vecinos(id1,id2)):
+    def peso_arista(self, id1, id2):
+        if(self.son_vecinos(id1, id2)):
             return self.aristas[id1][id2].peso
         raise ValueError
 
-    def leer(self,nombre):
-        """Lee un archivo con nombre""" # TODO: Puede que haya que modificar esto para leer el archivo
+    def leer(self, nombre):
+        """Lee un archivo con nombre"""  # TODO: Puede que haya que modificar esto para leer el archivo DONE
         try:
             miArch = open(nombre)
             cant_nodos = int(miArch.readline())
-            for i in range(0,cant_nodos):
-                linea = miArch.readline()
-                numeros = linea.split(" ")
-                numeros[PRIMERO] = numeros[PRIMERO].rstrip('\n')
-                self.agregar_vertice(numeros[PRIMERO],numeros[CERO])
+            for i in range(0, cant_nodos):
+                self.agregar_vertice(i, i)
             cant_aristas = int(miArch.readline())
-            for i in range(0,cant_aristas):
+            for i in range(0, cant_aristas):
                 linea = miArch.readline()
                 numeros = linea.split(" ")
                 numeros[SEGUNDO] = numeros[SEGUNDO].rstrip('\n')
-                self.agregar_arista(numeros[PRIMERO],numeros[SEGUNDO])
+                self.agregar_arista_dirigida(int(numeros[PRIMERO]),int (numeros[SEGUNDO]))
             miArch.close()
             return True
         except:
             print "Ocurrio un error leyendo el archivo"
             return False
-            
-    def _DFS_Visitar(self,actual,visitado,padre,lista):
+
+    def _DFS_Visitar(self, actual, visitado, padre, lista):
         """Realiza un recorrido DFS"""
         visitado[actual] = True
         lista.append(actual)
         for ID_ady in self.aristas[self.nodos[actual]].keys():
-            ady=self.nombres[ID_ady]
+            ady = self.nombres[ID_ady]
             if(visitado[ady] == False):
                 padre[ady] = actual
-                self._DFS_Visitar(ady,visitado,padre,lista)
+                self._DFS_Visitar(ady, visitado, padre, lista)
 
-    def DFS(self,nombre):
+    def DFS(self, nombre):
         """Hace un recorrido DFS desde un nombre """
-        visitado,padre,distancia = self._inicializar_iterador()
-        lista=[]
-        self._DFS_Visitar(nombre,visitado,padre,lista)
+        visitado, padre, distancia = self._inicializar_iterador()
+        lista = []
+        self._DFS_Visitar(nombre, visitado, padre, lista)
         return lista
 
     def _inicializar_iterador(self):
@@ -136,4 +152,4 @@ class Grafo(object):
             visitado[actual] = False
             distancia[actual] = INFINITO
             padre[actual] = None
-        return visitado,padre,distancia
+        return visitado, padre, distancia
