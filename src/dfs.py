@@ -1,5 +1,4 @@
 from grafo import Grafo
-import time
 
 class Tiempo:
 	def __init__(self):
