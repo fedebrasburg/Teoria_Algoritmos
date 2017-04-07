@@ -30,7 +30,7 @@ class Grafo(object):
         return lista_aristas
 
     def devolver_vertices(self):
-	return self.vertices
+	   return self.vertices
 
     def devolver_cant_vertices(self):
         """Devuelve los nodos del grafo"""
@@ -83,6 +83,15 @@ class Grafo(object):
         if(self.son_vecinos(id1,id2)):
             return self.aristas[id1][id2].peso
         raise ValueError
+
+    def adyacentes(self, id):
+        """Pide un id de un nodo existe y devuelve una lista de los id de sus adyacentes"""
+        adyacentes = []
+        for arista in self.aristas[id]:
+            adyacentes.append(arista)
+        return adyacentes
+
+
 
     def leer(self, nombre):
         """Lee un archivo con nombre"""  # TODO: Puede que haya que modificar esto para leer el archivo DONE
