@@ -26,7 +26,7 @@ def resolver_archivo_problema(archivo):
 def resolver_problema(E,H,Q):
 	n=len(E)
 	m=len(H)
-	print n
+
 	sig_deseado=[0]*n
 	P=[None]*m
 	pendientes=deque(range(n))
@@ -34,13 +34,13 @@ def resolver_problema(E,H,Q):
 		e=pendientes.pop()
 		h_deseado=E[e][sig_deseado[e]]
 		sig_deseado[e]+=1
-		print h_deseado
+
 		e_rival=P[h_deseado]
 		if e_rival is None:
 			P[h_deseado]=e
 		elif (H[h_deseado][e]>H[h_deseado][e_rival]):
 			P[h_deseado]=e
-			pendientes.add(e_rival)
+			pendientes.append(e_rival)
 		else:
-			pendientes.add(e)
+			pendientes.append(e)
 	return P
