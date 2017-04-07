@@ -15,6 +15,15 @@ class Arista(object):
     def __str__(self):
         return  str(self.id1) +" a " + str(self.id2) + ",peso "+ str(self.peso)
 
+def trasponer(g):
+        """Traspone el mismo grafo"""
+        g_t = Grafo()
+        for vertice in g.devolver_vertices():
+            g_t.agregar_vertice(vertice)
+        for arista in g.devolver_aristas():
+            g_t.agregar_arista_dirigida(arista.id2,arista.id1, arista.peso)
+        return g_t
+
 class Grafo(object):
     def __init__(self):
         """Crea un Grafo dirigido (o no) con aristas pesadas (o no)"""
@@ -90,14 +99,6 @@ class Grafo(object):
         for arista in self.aristas[id]:
             adyacentes.append(arista)
         return adyacentes
-
-    def trasponer(self):
-        """Traspone el mismo grafo"""
-        lista_aristas = self.devolver_aristas()
-        for arista in lista_aristas:
-            self.borrar_arista_dirigida(arista.id1,arista.id2)
-        for arista in lista_aristas:
-            self.agregar_arista_dirigida(arista.id2,arista.id1, arista.peso)
 
 
     def leer(self, nombre):
