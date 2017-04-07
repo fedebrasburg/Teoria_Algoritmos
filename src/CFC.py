@@ -1,27 +1,48 @@
 from grafo import Grafo
 from parser import Parser
+import time
 
-parser = Parser()
-g = parser.leerGrafoDirigido("../in/ej3/d1.txt")
-
-def DFS(g):
+tiempo = 0
+def DFS(g,f = {}, lista_vertices = {}):
+	if(lista_vertices == {}):
+		lista_vertices = g.devolver_vertices()
+	global tiempo
 	estado = {}
 	tiempo_visitado = {}
-	for v in g.devolver_vertices():
-		estado[v] = False
 	tiempo = 0
-	for v in g.devolver_vertices():
+	bosque = []
+	for v in lista_vertices:
+		estado[v] = False
+	for v in lista_vertices:
 		if estado[v] == False:
-			DFS_Visitar(g,v,estado,tiempo,tiempo_visitado)
+			arbol = []
+			DFS_Visitar(g,v,estado,tiempo_visitado,f,arbol)
+			bosque.append(arbol)
+	return bosque
 
-def DFS_Visitar(g,v,estado,tiempo,tiempo_visitado):
+def DFS_Visitar(g,v,estado,tiempo_visitado,f,arbol):
+	global tiempo
 	estado[v] = True
+	arbol.append(v)
 	tiempo += 1
-	print("Visite id:" + str(v) + " en tiempo " + str(tiempo))
 	tiempo_visitado[v] = tiempo
 	for u in g.adyacentes(v):
 		if estado[u] == False:
-			DFS_Visitar(g,u,estado,tiempo,tiempo_visitado)
+			DFS_Visitar(g,u,estado,tiempo_visitado,f,arbol)
 	tiempo += 1
+	f[v] = tiempo
 
-DFS(g)
+def CFC(g):
+	"""Recibe un grafo y devuelve las componentes fuertemente conexas"""
+	f = {}
+	DFS(g,f)
+	g.trasponer()
+	return DFS(g,{},sorted(f, key=f.get, reverse = True))
+
+for i in [1,2,3,4,5,6]:
+	start = time.time()
+	parser = Parser()
+	g = parser.leerGrafoDirigido("../in/ej3/d"+str(i)+".txt")
+	CFC(g)
+	end = time.time()
+	print("Con " + str(g.devolver_cant_vertices()) + " vertices y " + str(len(g.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")

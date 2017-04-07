@@ -91,6 +91,13 @@ class Grafo(object):
             adyacentes.append(arista)
         return adyacentes
 
+    def trasponer(self):
+        """Traspone el mismo grafo"""
+        lista_aristas = self.devolver_aristas()
+        for arista in lista_aristas:
+            self.borrar_arista_dirigida(arista.id1,arista.id2)
+        for arista in lista_aristas:
+            self.agregar_arista_dirigida(arista.id2,arista.id1, arista.peso)
 
 
     def leer(self, nombre):
