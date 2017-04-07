@@ -11,14 +11,27 @@ class Tiempo:
 	def actual(self):
 		return self.t
 
+class ResultadoDFS:
+	def __init__(self,tiempo_visitado,f,bosque):
+		self.bosque = bosque
+		self.f = f
+		self.tiempo_visitado = tiempo_visitado
+	def tiempo_visitado(self):
+		return self.tiempo_visitado
+	def tiempo_finalizado(self):
+		return self.f
+	def bosque_DFS(self):
+		return self.bosque
+
 tiempo = 0
-def DFS(g,f = {}, lista_vertices = {}):
+def DFS(g,lista_vertices = {}):
 	if(lista_vertices == {}):
 		lista_vertices = g.devolver_vertices()
 	estado = {}
 	tiempo_visitado = {}
 	tiempo = Tiempo()
 	bosque = []
+	f = {}
 	for v in lista_vertices:
 		estado[v] = False
 	for v in lista_vertices:
@@ -26,7 +39,7 @@ def DFS(g,f = {}, lista_vertices = {}):
 			arbol = []
 			DFS_Visitar(g,v,estado,tiempo,tiempo_visitado,f,arbol)
 			bosque.append(arbol)
-	return bosque
+	return ResultadoDFS(tiempo_visitado,f,bosque)
 
 def DFS_Visitar(g,v,estado,tiempo,tiempo_visitado,f,arbol):
 	estado[v] = True
@@ -41,9 +54,8 @@ def DFS_Visitar(g,v,estado,tiempo,tiempo_visitado,f,arbol):
 
 def CFC(g):
 	"""Recibe un grafo y devuelve las componentes fuertemente conexas"""
-	f = {}
-	DFS(g,f)
-	return DFS(trasponer(g),{},sorted(f, key=f.get, reverse = True))
+	r = DFS(g)
+	return DFS(trasponer(g),sorted(r.tiempo_finalizado(), key=r.tiempo_finalizado().get, reverse = True)).bosque_DFS()
 
 for i in [0]:
 	start = time.time()
@@ -52,3 +64,5 @@ for i in [0]:
 	print CFC(g)
 	end = time.time()
 	print("Con " + str(g.devolver_cant_vertices()) + " vertices y " + str(len(g.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")
+
+
