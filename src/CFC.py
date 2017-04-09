@@ -8,7 +8,7 @@ import time
 def CFC(g):
 	"""Recibe un grafo y devuelve las componentes fuertemente conexas"""
 	r = DFS(g)
-	return DFS(trasponer(g),sorted(r.tiempo_finalizado(), key=r.tiempo_finalizado().get, reverse = True)).bosque_DFS()
+	return DFS(trasponer(g),sorted(r.get_tiempo_finalizado(), key=r.get_tiempo_finalizado().get, reverse = True)).get_bosque_DFS()
 
 for i in [0]:
 	start = time.time()

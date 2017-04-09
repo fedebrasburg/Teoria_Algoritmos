@@ -24,8 +24,9 @@ class Parser(object):
             miArch.close()
             return True
         except:
-            print "Ocurrio un error leyendo el archivo"
+            print "Ocurrio un error leyendo el archivo de Stable Matching " + nombre
             return False
+
     def _read_line(self,miArch):
         return miArch.readline().strip("\n")
 
@@ -51,14 +52,22 @@ class Parser(object):
             print "Ocurrio un error leyendo el archivo"
             return False
 
-
+    def leerGrafoNoDirigido(self, nombre):
+        """Lee un archivo de un grafo no dirigido sin peso"""
+        try:
+            grafo = Grafo()
+            grafo.leerNoDirigido(nombre)
+            return grafo
+        except:
+            print "Ocurrio un error leyendo el archivo de grafo no dirigido " + nombre
+            return False
 
     def leerGrafoDirigido(self, nombre):
         """Lee un archivo de un grafo dirigido sin peso"""
         try:
             grafo = Grafo()
-            grafo.leer(nombre)
+            grafo.leerDirigido(nombre)
             return grafo
         except:
-            print "Ocurrio un error leyendo el archivo"
+            print "Ocurrio un error leyendo el archivo de grafo dirigido " + nombre
             return False

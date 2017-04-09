@@ -9,42 +9,58 @@ class Tiempo:
 		return self.t
 
 class ResultadoDFS:
-	def __init__(self,tiempo_visitado,f,bosque):
+	def __init__(self, tiempo_visitado, tiempo_finalizado, bosque, puntos_artic):
 		self.bosque = bosque
-		self.f = f
+		self.tiempo_finalizado = tiempo_finalizado
 		self.tiempo_visitado = tiempo_visitado
-	def tiempo_visitado(self):
+		self.puntos_artic = puntos_artic
+	def get_tiempo_visitado(self):
 		return self.tiempo_visitado
-	def tiempo_finalizado(self):
-		return self.f
-	def bosque_DFS(self):
+	def get_tiempo_finalizado(self):
+		return self.tiempo_finalizado
+	def get_bosque_DFS(self):
 		return self.bosque
+	def get_puntos_artic(self):
+		return self.puntos_artic
 
-tiempo = 0
-def DFS(g,lista_vertices = {}):
-	if(lista_vertices == {}):
+def DFS(g, lista_vertices = {}):
+	if (lista_vertices == {}):
 		lista_vertices = g.devolver_vertices()
-	estado = {}
+	visitado = {}
 	tiempo_visitado = {}
 	tiempo = Tiempo()
 	bosque = []
-	f = {}
+	tiempo_finalizado = {}
+	predecesor = {}
+	bajo = {}
+	puntos_artic = set()
 	for v in lista_vertices:
-		estado[v] = False
+		visitado[v] = False
+		predecesor[v] = None
 	for v in lista_vertices:
-		if estado[v] == False:
+		if (not visitado[v]):
 			arbol = []
-			DFS_Visitar(g,v,estado,tiempo,tiempo_visitado,f,arbol)
+			DFS_Visitar(g, v, visitado, tiempo, tiempo_visitado, tiempo_finalizado, arbol, bajo, predecesor, puntos_artic)
+			# Como v es raiz del arbol, lo saco para analizarlo por separado
+			if (v in puntos_artic): # Aunque deberia estar incluida siempre
+				puntos_artic.remove(v)
 			bosque.append(arbol)
-	return ResultadoDFS(tiempo_visitado,f,bosque)
+	return ResultadoDFS(tiempo_visitado, tiempo_finalizado, bosque, puntos_artic)
 
-def DFS_Visitar(g,v,estado,tiempo,tiempo_visitado,f,arbol):
-	estado[v] = True
+def DFS_Visitar(g, v, visitado, tiempo, tiempo_visitado, tiempo_finalizado, arbol, bajo, predecesor, puntos_artic):
+	visitado[v] = True
 	arbol.append(v)
 	tiempo.incrementar()
 	tiempo_visitado[v] = tiempo.actual()
+	bajo[v] = tiempo_visitado[v]
 	for u in g.adyacentes(v):
-		if estado[u] == False:
-			DFS_Visitar(g,u,estado,tiempo,tiempo_visitado,f,arbol)
+		if (not visitado[u]):
+			predecesor[u] = v
+			DFS_Visitar(g, u, visitado, tiempo, tiempo_visitado, tiempo_finalizado, arbol, bajo, predecesor, puntos_artic)
+			bajo[v] = min(bajo[v], bajo[u])
+			if (bajo[u] >= tiempo_visitado[v]):
+				puntos_artic.add(v)
+		elif (u != predecesor[v]): # If arista de retroceso
+			bajo[v] = min(bajo[v], tiempo_visitado[u])
 	tiempo.incrementar()
-	f[v] = tiempo.actual()
+	tiempo_finalizado[v] = tiempo.actual()
