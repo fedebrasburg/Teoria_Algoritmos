@@ -9,7 +9,7 @@ class Arista(object):
     def peso(self):
         return self.peso
     def __str__(self):
-        return str(self.id1) +" a " + str(self.id2) + ", peso "+ str(self.peso)
+        return str(self.id1) + " a " + str(self.id2) + ", peso " + str(self.peso)
 
 def trasponer(g):
         """Traspone el mismo grafo"""

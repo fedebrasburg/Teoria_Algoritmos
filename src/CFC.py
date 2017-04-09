@@ -17,5 +17,3 @@ for i in [0]:
 	print CFC(g)
 	end = time.time()
 	print("Con " + str(g.devolver_cant_vertices()) + " vertices y " + str(len(g.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")
-
-
