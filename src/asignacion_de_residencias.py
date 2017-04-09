@@ -1,4 +1,5 @@
 from random import shuffle
+from random import sample
 from parser import Parser
 from collections import deque
 
@@ -10,7 +11,7 @@ def crear_archivo_problema(nombre,m,n):
 def crear_problema(m,n):
 	E=crear_lista_de_listas_al_azar(m,n)
 	H=crear_lista_de_listas_al_azar(n,m)
-	Q=[n for i in range(m) ]
+	Q=constrained_sum_sample_pos(m,n)
 	return E,H,Q
 
 def crear_lista_de_listas_al_azar(cantidad_de_elementos,cantidad_de_listas):
@@ -23,12 +24,40 @@ def resolver_archivo_problema(archivo):
 	E,H,Q=parser.leerStableMatching(archivo)
 	return resolver_problema(E,H,Q)
 
+def constrained_sum_sample_pos(n, total):
+	#http://stackoverflow.com/questions/3589214/generate-multiple-random-numbers-to-equal-a-value-in-python
+    """Return a randomly chosen list of n positive integers summing to total.
+    Each such list is equally likely to occur."""
+    dividers = sorted(sample(xrange(1, total), n - 1))
+    return [a - b for a, b in zip(dividers + [total], [0] + dividers)]
+
+def reducir_problema(E,H,Q):
+	n=len(E)
+	m=len(H)
+	viejo_E=E
+	nuevo_E=[]
+	nuevo_H=H
+	for i in range(0,len(Q)):
+		nuevo_E=[]	
+		tam_H=len(nuevo_H)
+		nuevo_H=nuevo_H+[nuevo_H[i]]*(Q[i]-1)
+		nuevo_tam_H=len(nuevo_H)
+		print "nuevo tam de H",nuevo_tam_H
+		print "H",nuevo_H
+		for l in viejo_E:
+			print l[:l.index(i)+1],"**",range(tam_H,nuevo_tam_H),"**",l[l.index(i)+1:]
+			nuevo_E+= [l[:l.index(i)+1]+range(tam_H,nuevo_tam_H)+l[l.index(i)+1:]]
+		viejo_E=nuevo_E
+		print "E",nuevo_E
+	return nuevo_E,nuevo_H
+
 def resolver_problema(E,H,Q):
+	E,H=reducir_problema(E,H,Q)
 	n=len(E)
 	m=len(H)
 
 	sig_deseado=[0]*n
-	P=[None]*m
+	P=[None]*n
 	pendientes=deque(range(n))
 	while (len(pendientes)!=0):
 		e=pendientes.pop()
