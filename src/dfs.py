@@ -1,4 +1,5 @@
 from grafo import Grafo
+import sys
 
 class Tiempo:
 	def __init__(self):
@@ -24,6 +25,7 @@ class ResultadoDFS:
 		return self.puntos_artic
 
 def DFS(g, lista_vertices = {}):
+	sys.setrecursionlimit(6054) # Con 6054 se banca el g5
 	if (lista_vertices == {}):
 		lista_vertices = g.devolver_vertices()
 	visitado = {}

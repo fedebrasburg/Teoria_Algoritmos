@@ -10,7 +10,7 @@ def PuntosArticulacion(g):
     dfs = DFS(g)
     return dfs.get_puntos_artic()
 
-for i in [0, 7, 1, 2, 3, 4]:
+for i in [0, 7, 1, 2, 3, 4, 5]:
     start = time.time()
     parser = Parser()
     g = parser.leerGrafoNoDirigido("../in/ej2/g"+str(i)+".txt")
