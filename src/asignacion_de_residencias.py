@@ -42,13 +42,9 @@ def reducir_problema(E,H,Q):
 		tam_H=len(nuevo_H)
 		nuevo_H=nuevo_H+[nuevo_H[i]]*(Q[i]-1)
 		nuevo_tam_H=len(nuevo_H)
-		print "nuevo tam de H",nuevo_tam_H
-		print "H",nuevo_H
 		for l in viejo_E:
-			print l[:l.index(i)+1],"**",range(tam_H,nuevo_tam_H),"**",l[l.index(i)+1:]
 			nuevo_E+= [l[:l.index(i)+1]+range(tam_H,nuevo_tam_H)+l[l.index(i)+1:]]
 		viejo_E=nuevo_E
-		print "E",nuevo_E
 	return nuevo_E,nuevo_H
 
 def resolver_problema(E,H,Q):
