@@ -6,6 +6,7 @@ from collections import deque
 def crear_archivo_problema(nombre,m,n): 
 	parser=Parser()
 	E,H,Q=crear_problema(m,n)
+	print "creado"
 	parser.escribirStableMatching(nombre,E,H,Q)
 
 def crear_problema(m,n):
