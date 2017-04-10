@@ -48,9 +48,11 @@ def reducir_problema(E,H,Q):
 	return nuevo_E,nuevo_H
 
 def resolver_problema(E,H,Q):
-	E,H=reducir_problema(E,H,Q)
 	n=len(E)
 	m=len(H)
+	if(n!=m):
+		E,H=reducir_problema(E,H,Q)
+	
 
 	sig_deseado=[0]*n
 	P=[None]*n
