@@ -1,16 +1,17 @@
 from grafo import Grafo
 from parser import Parser
 from dfs import DFS
+from dfs_iterativo import DFS_iterativo
 import time
 
 """Utilizar como python puntosArticulacion.py"""
 
 def PuntosArticulacion(g):
     """Dado un grafo no dirigido, devuelve los puntos de articulacion"""
-    dfs = DFS(g)
+    dfs = DFS_iterativo(g)
     return dfs.get_puntos_artic()
 
-for i in [0, 7, 1, 2, 3, 4, 5]:
+for i in [0, 7, 1, 2, 3, 4, 5, 6]:
     start = time.time()
     parser = Parser()
     g = parser.leerGrafoNoDirigido("../in/ej2/g"+str(i)+".txt")

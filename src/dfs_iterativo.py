@@ -1,31 +1,9 @@
 from grafo import Grafo
+from dfs import Tiempo
+from dfs import ResultadoDFS
 import sys
 
-class Tiempo:
-	def __init__(self):
-		self.t = 0
-	def incrementar(self):
-		self.t += 1
-	def actual(self):
-		return self.t
-
-class ResultadoDFS:
-	def __init__(self, tiempo_visitado, tiempo_finalizado, bosque, puntos_artic):
-		self.bosque = bosque
-		self.tiempo_finalizado = tiempo_finalizado
-		self.tiempo_visitado = tiempo_visitado
-		self.puntos_artic = puntos_artic
-	def get_tiempo_visitado(self):
-		return self.tiempo_visitado
-	def get_tiempo_finalizado(self):
-		return self.tiempo_finalizado
-	def get_bosque_DFS(self):
-		return self.bosque
-	def get_puntos_artic(self):
-		return self.puntos_artic
-
-def DFS(g, lista_vertices = {}):
-	sys.setrecursionlimit(6054) # Con 6054 se banca el g5, con 22784 tira exceeded recursion depth, con 22785 segfault (Para el g6)
+def DFS_iterativo(g, lista_vertices = {}):
 	if (lista_vertices == {}):
 		lista_vertices = g.devolver_vertices()
 	visitado = {}
@@ -37,13 +15,32 @@ def DFS(g, lista_vertices = {}):
 	bajo = {}
 	puntos_artic = set()
 	raices = []
+	stack = []
 	for v in lista_vertices:
 		visitado[v] = False
 		predecesor[v] = None
 	for v in lista_vertices:
 		if (not visitado[v]):
+			stack.append(lista_vertices[0])
 			arbol = []
-			DFS_Visitar(g, v, visitado, tiempo, tiempo_visitado, tiempo_finalizado, arbol, bajo, predecesor, puntos_artic)
+			while (not stack):
+				u = stack.pop()
+				visitado[u] = True
+				arbol.append(u)
+				tiempo.incrementar()
+				tiempo_visitado[u] = tiempo.actual()
+				bajo[u] = tiempo_visitado[u]
+				for w in g.adyacentes(u):
+					if (not visitado[w]):
+						stack.append[w]
+						predecesor[w] = u
+						bajo[u] = min(bajo[u], bajo[w]) # El problema esta aca, donde necesito conocer el bajo[w], cuando todavia no lo procese
+						if (bajo[w] >= tiempo_visitado[u]):
+							puntos_artic.add(u)
+					elif (w != predecesor[u]): # Arista de retroceso
+						bajo[u] = min(bajo[u], tiempo_visitado[w])
+				tiempo.incrementar()
+				tiempo_finalizado[u] = tiempo.actual()
 			# Como v es raiz del arbol, lo saco para analizarlo por separado
 			if (v in puntos_artic): # Aunque deberia estar incluida siempre
 				puntos_artic.remove(v)
