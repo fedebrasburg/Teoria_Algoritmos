@@ -21,9 +21,9 @@ def DFS_iterativo(g, lista_vertices = {}):
 		predecesor[v] = None
 	for v in lista_vertices:
 		if (not visitado[v]):
-			stack.append(lista_vertices[0])
+			stack.append(v)
 			arbol = []
-			while (not stack):
+			while (stack):
 				u = stack.pop()
 				visitado[u] = True
 				arbol.append(u)
@@ -32,7 +32,7 @@ def DFS_iterativo(g, lista_vertices = {}):
 				bajo[u] = tiempo_visitado[u]
 				for w in g.adyacentes(u):
 					if (not visitado[w]):
-						stack.append[w]
+						stack.append(w)
 						predecesor[w] = u
 						bajo[u] = min(bajo[u], bajo[w]) # El problema esta aca, donde necesito conocer el bajo[w], cuando todavia no lo procese
 						if (bajo[w] >= tiempo_visitado[u]):
