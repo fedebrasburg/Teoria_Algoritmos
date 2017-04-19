@@ -1,7 +1,5 @@
-from grafo import Grafo
 from dfs import Tiempo
 from dfs import ResultadoDFS
-import sys
 
 def DFS_iterativo(g, lista_vertices = {}):
 	if (lista_vertices == {}):
@@ -47,24 +45,25 @@ def DFS_iterativo(g, lista_vertices = {}):
 			raices.append(v)
 			bosque.append(arbol)
 	print "# raices:", len(raices) # Si es conexo deberia ser 1 siempre
-	for v in raices:
-		hijos = 0
-		for u in g.adyacentes(v): # Basta con revisar si los adyacentes a v lo tienen como predecesor o no, no es necesario en todos los vertices
-			if (predecesor[u] == v):
-				hijos += 1
-		if (hijos >= 2):
-			puntos_artic.add(v)
+	analizarRaices(g, predecesor, puntos_artic, raices)
+
 	return ResultadoDFS(tiempo_visitado, tiempo_finalizado, bosque, puntos_artic)
 
-def assignNum(g, u, tiempo_visitado, predecesor, visitado, tiempo, arbol):
-	# arbol.append(u)
-	visitado[u] = True
-	tiempo.incrementar()
-	tiempo_visitado[u] = tiempo.actual()
-	for w in g.adyacentes(u):
-		if (not visitado[w]):
-			predecesor[w] = u
-			assignNum(g, w, tiempo_visitado, predecesor, visitado, tiempo, arbol)
+def assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol):
+	stack = []
+	stack.append(v)
+	while (stack):
+		u = stack.pop()
+		if (visitado[u]):
+			continue
+		visitado[u] = True
+		tiempo.incrementar()
+		tiempo_visitado[u] = tiempo.actual()
+		# arbol.append(u)
+		for w in g.adyacentes(u):
+			if (not visitado[w]):
+				stack.append(w)
+				predecesor[w] = u
 
 def assignLow(g, u, tiempo_visitado, predecesor, bajo, puntos_artic):
 	bajo[u] = tiempo_visitado[u]
@@ -77,9 +76,21 @@ def assignLow(g, u, tiempo_visitado, predecesor, bajo, puntos_artic):
 		elif (w != predecesor[u]):
 			bajo[u] = min(bajo[u], tiempo_visitado[w])
 
+def analizarRaices(g, predecesor, puntos_artic, raices):
+	# Analizo las raices como puntos de articulacion
+	for v in raices:
+		hijos = 0
+		for u in g.adyacentes(
+				v):  # Basta con revisar si los adyacentes a v lo tienen como predecesor o no, no es necesario en todos los vertices
+			if (predecesor[u] == v):
+				hijos += 1
+		if (hijos >= 2):
+			puntos_artic.add(v)
+
 def DFS_iterativo2(g, lista_vertices = {}):
 	if (lista_vertices == {}):
 		lista_vertices = g.devolver_vertices()
+	# Inicializo variables
 	visitado = {}
 	tiempo_visitado = {}
 	tiempo = Tiempo()
@@ -99,19 +110,10 @@ def DFS_iterativo2(g, lista_vertices = {}):
 			assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol)
 			assignLow(g, v, tiempo_visitado, predecesor, bajo, puntos_artic)
 			raices.append(v)
+			# Como v es raiz del arbol, lo saco para analizarlo por separado
+			if (v in puntos_artic): # Aunque deberia estar incluida siempre
+				puntos_artic.remove(v)
 			bosque.append(arbol)
 	print "# raices:", len(raices) # Si es conexo deberia ser 1 siempre
-
-	# Analizo las raices como puntos de articulacion
-	for v in raices:
-		# Como v es raiz del arbol, lo saco para analizarlo por separado
-		if (v in puntos_artic): # Aunque deberia estar incluida siempre
-			puntos_artic.remove(v)
-		# Veo si lo vuelvo a incluir
-		hijos = 0
-		for u in g.adyacentes(v): # Basta con revisar si los adyacentes a v lo tienen como predecesor o no, no es necesario en todos los vertices
-			if (predecesor[u] == v):
-				hijos += 1
-		if (hijos >= 2):
-			puntos_artic.add(v)
+	analizarRaices(g, predecesor, puntos_artic, raices)
 	return ResultadoDFS(tiempo_visitado, [], bosque, puntos_artic)
