@@ -56,20 +56,62 @@ def DFS_iterativo(g, lista_vertices = {}):
 			puntos_artic.add(v)
 	return ResultadoDFS(tiempo_visitado, tiempo_finalizado, bosque, puntos_artic)
 
-def DFS_Visitar(g, v, visitado, tiempo, tiempo_visitado, tiempo_finalizado, arbol, bajo, predecesor, puntos_artic):
-	visitado[v] = True
-	arbol.append(v)
+def assignNum(g, u, tiempo_visitado, predecesor, visitado, tiempo, arbol):
+	# arbol.append(u)
+	visitado[u] = True
 	tiempo.incrementar()
-	tiempo_visitado[v] = tiempo.actual()
-	bajo[v] = tiempo_visitado[v]
-	for u in g.adyacentes(v):
-		if (not visitado[u]):
-			predecesor[u] = v
-			DFS_Visitar(g, u, visitado, tiempo, tiempo_visitado, tiempo_finalizado, arbol, bajo, predecesor, puntos_artic)
-			bajo[v] = min(bajo[v], bajo[u])
-			if (bajo[u] >= tiempo_visitado[v]):
-				puntos_artic.add(v)
-		elif (u != predecesor[v]): # Arista de retroceso
-			bajo[v] = min(bajo[v], tiempo_visitado[u])
-	tiempo.incrementar()
-	tiempo_finalizado[v] = tiempo.actual()
+	tiempo_visitado[u] = tiempo.actual()
+	for w in g.adyacentes(u):
+		if (not visitado[w]):
+			predecesor[w] = u
+			assignNum(g, w, tiempo_visitado, predecesor, visitado, tiempo, arbol)
+
+def assignLow(g, u, tiempo_visitado, predecesor, bajo, puntos_artic):
+	bajo[u] = tiempo_visitado[u]
+	for w in g.adyacentes(u):
+		if (tiempo_visitado[w] > tiempo_visitado[u]):
+			assignLow(g, w, tiempo_visitado, predecesor, bajo, puntos_artic)
+			if (bajo[w] >= tiempo_visitado[u]):
+				puntos_artic.add(u)
+			bajo[u] = min(bajo[u], bajo[w])
+		elif (w != predecesor[u]):
+			bajo[u] = min(bajo[u], tiempo_visitado[w])
+
+def DFS_iterativo2(g, lista_vertices = {}):
+	if (lista_vertices == {}):
+		lista_vertices = g.devolver_vertices()
+	visitado = {}
+	tiempo_visitado = {}
+	tiempo = Tiempo()
+	bosque = []
+	predecesor = {}
+	bajo = {}
+	puntos_artic = set()
+	raices = []
+	for v in lista_vertices:
+		visitado[v] = False
+		predecesor[v] = None
+
+	# Armo el arbol DFS
+	for v in lista_vertices:
+		if (not visitado[v]):
+			arbol = []
+			assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol)
+			assignLow(g, v, tiempo_visitado, predecesor, bajo, puntos_artic)
+			raices.append(v)
+			bosque.append(arbol)
+	print "# raices:", len(raices) # Si es conexo deberia ser 1 siempre
+
+	# Analizo las raices como puntos de articulacion
+	for v in raices:
+		# Como v es raiz del arbol, lo saco para analizarlo por separado
+		if (v in puntos_artic): # Aunque deberia estar incluida siempre
+			puntos_artic.remove(v)
+		# Veo si lo vuelvo a incluir
+		hijos = 0
+		for u in g.adyacentes(v): # Basta con revisar si los adyacentes a v lo tienen como predecesor o no, no es necesario en todos los vertices
+			if (predecesor[u] == v):
+				hijos += 1
+		if (hijos >= 2):
+			puntos_artic.add(v)
+	return ResultadoDFS(tiempo_visitado, [], bosque, puntos_artic)
