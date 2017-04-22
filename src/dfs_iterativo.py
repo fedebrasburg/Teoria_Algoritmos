@@ -1,68 +1,55 @@
 from dfs import Tiempo
-from dfs import ResultadoDFS
 
 
-def asignar_visitado(g, v, tiempo_visitado, predecesor, visitado, tiempo):
-	stack = [v]
-	stack_recorrido = [v]
-	while stack:
-		u = stack.pop()
-		if visitado[u]:
-			continue
-		visitado[u] = True
-		tiempo.incrementar()
-		tiempo_visitado[u] = tiempo.actual()
-		for w in g.adyacentes(u):
-			if not visitado[w]:
-				stack.append(w)
-				stack_recorrido.append(w)
-				predecesor[w] = u
-	return stack_recorrido
+class DFSIterativo(object):
 
-def asignar_bajo(g, tiempo_visitado, predecesor, bajo, puntos_artic, stack):
-	while stack:
-		u = stack.pop()
-		bajo[u] = tiempo_visitado[u]
-		for w in g.adyacentes(u):
-			if tiempo_visitado[w] > tiempo_visitado[u]:
-				if bajo[w] >= tiempo_visitado[u]:
-					puntos_artic.add(u)
-				bajo[u] = min(bajo[u], bajo[w])
-			elif w != predecesor[u]:
-				bajo[u] = min(bajo[u], tiempo_visitado[w])
+	def __init__(self, g, v, visitado):
+		self.g = g
+		self.v = v
+		self.visitado = visitado
+		self.tiempo_visitado = {}
+		self.tiempo = Tiempo()
+		self.predecesor = {}
+		self.bajo = {}
+		self.puntos_artic = set()
+		for u in g.devolver_vertices():
+			self.predecesor[u] = None
 
-def analizar_raices(g, predecesor, puntos_artic, raices):
-	# Analizo las raices como puntos de articulacion
-	for v in raices:
-		hijos = 0
-		for u in g.adyacentes(v):  # Basta con revisar si los adyacentes a v lo tienen como predecesor o no, no es necesario en todos los vertices
-			if predecesor[u] == v:
-				hijos += 1
-		if hijos >= 2:
-			puntos_artic.add(v)
+	def asignar_visitado(self):
+		stack = [self.v]
+		stack_recorrido = [self.v]
+		while stack:
+			u = stack.pop()
+			if self.visitado[u]:
+				continue
+			self.visitado[u] = True
+			self.tiempo.incrementar()
+			self.tiempo_visitado[u] = self.tiempo.actual()
+			for w in self.g.adyacentes(u):
+				if not self.visitado[w]:
+					stack.append(w)
+					stack_recorrido.append(w)
+					self.predecesor[w] = u
+		return stack_recorrido
 
-def DFS_iterativo(g):
-	# Inicializo variables
-	lista_vertices = g.devolver_vertices()
-	visitado = {}
-	tiempo_visitado = {}
-	tiempo = Tiempo()
-	predecesor = {}
-	bajo = {}
-	puntos_artic = set()
-	raices = []
-	for v in lista_vertices:
-		visitado[v] = False
-		predecesor[v] = None
+	def asignar_bajo(self, stack):
+		while stack:
+			u = stack.pop()
+			self.bajo[u] = self.tiempo_visitado[u]
+			for w in self.g.adyacentes(u):
+				if self.tiempo_visitado[w] > self.tiempo_visitado[u]:
+					if self.bajo[w] >= self.tiempo_visitado[u]:
+						self.puntos_artic.add(u)
+					self.bajo[u] = min(self.bajo[u], self.bajo[w])
+				elif w != self.predecesor[u]:
+					self.bajo[u] = min(self.bajo[u], self.tiempo_visitado[w])
 
-	# Armo el arbol DFS
-	for v in lista_vertices:
-		if not visitado[v]:
-			stack = asignar_visitado(g, v, tiempo_visitado, predecesor, visitado, tiempo)
-			asignar_bajo(g, tiempo_visitado, predecesor, bajo, puntos_artic, stack)
-			raices.append(v)
-			# Como v es raiz del arbol, lo saco para analizarlo por separado
-			if v in puntos_artic: # Aunque deberia estar incluida siempre
-				puntos_artic.remove(v)
-	analizar_raices(g, predecesor, puntos_artic, raices)
-	return ResultadoDFS(tiempo_visitado, [], [], puntos_artic)
+	def get_predecesor(self):
+		return self.predecesor
+
+	def get_puntos_artic(self):
+		return self.puntos_artic
+
+	def hacer_dfs(self):
+		stack_recorrido = self.asignar_visitado()
+		self.asignar_bajo(stack_recorrido)
