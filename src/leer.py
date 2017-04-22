@@ -1,10 +1,9 @@
 #!/usr/bin/python
 """ Usar como: python leer.py "../in/ej2/g1.txt"""
-from grafo import Grafo
 from parser import Parser
 import sys
 
-if(len(sys.argv) < 2):
+if len(sys.argv) < 2:
 	print "Mandar el nombre del archivo a leer"
 print "Archivo a leer:", sys.argv[1]
 p = Parser()

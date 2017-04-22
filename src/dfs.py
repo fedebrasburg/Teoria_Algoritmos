@@ -4,7 +4,7 @@ from resultado_DFS import ResultadoDFS
 
 class DFS:
 
-	def __init__(self, g, lista_vertices = {}):
+	def __init__(self, g, lista_vertices={}):
 		self.g = g
 		self.lista_vertices = g.devolver_vertices() if (lista_vertices == {}) else lista_vertices
 		self.visitado = {}

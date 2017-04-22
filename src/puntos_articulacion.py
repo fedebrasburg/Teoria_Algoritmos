@@ -31,7 +31,7 @@ class PuntosArticulacion(object):
                 puntos_articulacion.update(puntos_articulacion_v)
         return puntos_articulacion
 
-    def analizar_raiz(self, predecesor, puntos_artic, v):
+    def analizar_raiz(self, predecesor, puntos_articulacion, v):
         # Analizo la raiz como puntos de articulacion
         hijos = 0
         # Basta con revisar si los adyacentes a v lo tienen como predecesor o no, no es necesario en todos los vertices
@@ -39,7 +39,7 @@ class PuntosArticulacion(object):
             if predecesor[u] == v:
                 hijos += 1
         if hijos >= 2:
-            puntos_artic.add(v)
+            puntos_articulacion.add(v)
 
 
 for i in [0, 7, 1, 2, 3, 4, 5, 6]:
