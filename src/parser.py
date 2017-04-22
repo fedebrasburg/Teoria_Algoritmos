@@ -63,7 +63,7 @@ class Parser(object):
             print "Ocurrio un error leyendo el archivo de grafo no dirigido " + nombre
             return False
 
-    def leerGrafoDirigido(self, nombre):
+    def leer_grafo_dirigido(self, nombre):
         """Lee un archivo de un grafo dirigido sin peso"""
         try:
             grafo = Grafo()

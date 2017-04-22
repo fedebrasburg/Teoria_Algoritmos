@@ -1,7 +1,7 @@
 from parser import Parser
 
 parser = Parser()
-parser.leerGrafoDirigido("../in/ej2/g1.txt")
+parser.leer_grafo_dirigido("../in/ej2/g1.txt")
 
 E = [[1, 2, 3], [3, 1, 2], [2, 3, 1]]
 H = [[4, 5, 6], [6, 4, 5], [5, 6, 4]]

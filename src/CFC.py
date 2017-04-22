@@ -13,7 +13,7 @@ def CFC(g):
 for i in [0]:
 	start = time.time()
 	parser = Parser()
-	g = parser.leerGrafoDirigido("../in/ej3/d"+str(i)+".txt")
+	g = parser.leer_grafo_dirigido("../in/ej3/d" + str(i) + ".txt")
 	print CFC(g)
 	end = time.time()
 	print("Con " + str(g.devolver_cant_vertices()) + " vertices y " + str(len(g.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")

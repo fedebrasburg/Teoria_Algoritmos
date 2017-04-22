@@ -8,7 +8,7 @@ if(len(sys.argv) < 2):
 	print "Mandar el nombre del archivo a leer"
 print "Archivo a leer:", sys.argv[1]
 p = Parser()
-g = p.leerGrafoDirigido(sys.argv[1])
+g = p.leer_grafo_dirigido(sys.argv[1])
 ve = g.devolver_vertices()
 print "vertices", ve
 ar = g.devolver_aristas()
