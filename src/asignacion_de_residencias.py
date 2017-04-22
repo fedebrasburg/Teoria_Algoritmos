@@ -6,11 +6,13 @@ from collections import deque
 
 def crear_archivo_problema(nombre, m, n):
     parser = Parser()
-    E, H, Q = crear_problema(m, n)
-    print "creado"
+    E, H, Q = crear_problema(int(m), int(n))
     parser.escribir_stable_matching(nombre, E, H, Q)
 
 def crear_problema(m, n):
+    if m > n:
+        print "El numero de hospitales debe ser menor o igual al de pacientes"
+        exit()
     E = crear_lista_de_listas_al_azar(m, n)
     H = crear_lista_de_listas_al_azar(n, m)
     Q = constrained_sum_sample_pos(m, n)
@@ -25,6 +27,15 @@ def resolver_archivo_problema(archivo):
     parser = Parser()
     E, H, Q = parser.leer_stable_matching(archivo)
     return resolver_problema(E, H, Q)
+
+def resolver_archivo_problema_con_archivo_salida(archivo_problema,archivo_salida):
+    parser = Parser()
+    E, H, Q = parser.leer_stable_matching(archivo_problema)
+    P= resolver_problema(E, H, Q)
+    f = open(archivo_salida, 'w')
+    f.write(str(P))
+    f.close()
+    return True
 
 def constrained_sum_sample_pos(n, total):
     # http://stackoverflow.com/questions/3589214/generate-multiple-random-numbers-to-equal-a-value-in-python
@@ -50,6 +61,9 @@ def reducir_problema(E, H, Q):
 def resolver_problema(E, H, Q):
     n = len(E)
     m = len(H)
+    if m > n:
+        print "El numero de hospitales debe ser menor o igual al de pacientes"
+        exit()
     if n != m:
         E, H = reducir_problema(E, H, Q)
 
