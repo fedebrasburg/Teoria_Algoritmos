@@ -51,7 +51,9 @@ def DFS_iterativo(g, lista_vertices = {}):
 
 def assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol):
 	stack = []
+	stack2 = []
 	stack.append(v)
+	stack2.append(v)
 	while (stack):
 		u = stack.pop()
 		if (visitado[u]):
@@ -63,18 +65,28 @@ def assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol):
 		for w in g.adyacentes(u):
 			if (not visitado[w]):
 				stack.append(w)
+				stack2.append(w)
 				predecesor[w] = u
+	return stack2
 
-def assignLow(g, u, tiempo_visitado, predecesor, bajo, puntos_artic):
-	bajo[u] = tiempo_visitado[u]
-	for w in g.adyacentes(u):
-		if (tiempo_visitado[w] > tiempo_visitado[u]):
-			assignLow(g, w, tiempo_visitado, predecesor, bajo, puntos_artic)
-			if (bajo[w] >= tiempo_visitado[u]):
-				puntos_artic.add(u)
-			bajo[u] = min(bajo[u], bajo[w])
-		elif (w != predecesor[u]):
-			bajo[u] = min(bajo[u], tiempo_visitado[w])
+def assignLow(g, v, tiempo_visitado, predecesor, bajo, puntos_artic, stack2):
+	for u in g.devolver_vertices():
+		bajo[u] = tiempo_visitado[u]
+
+	stack = []
+	stack.append(v)
+	while (stack2):
+		u = stack2.pop()
+		# bajo[u] = tiempo_visitado[u]
+		for w in g.adyacentes(u):
+			if (tiempo_visitado[w] > tiempo_visitado[u]):
+				# stack.append(w)
+				# assignLow(g, w, tiempo_visitado, predecesor, bajo, puntos_artic)
+				if (bajo[w] >= tiempo_visitado[u]):
+					puntos_artic.add(u)
+				bajo[u] = min(bajo[u], bajo[w])
+			elif (w != predecesor[u]):
+				bajo[u] = min(bajo[u], tiempo_visitado[w])
 
 def analizarRaices(g, predecesor, puntos_artic, raices):
 	# Analizo las raices como puntos de articulacion
@@ -107,8 +119,8 @@ def DFS_iterativo2(g, lista_vertices = {}):
 	for v in lista_vertices:
 		if (not visitado[v]):
 			arbol = []
-			assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol)
-			assignLow(g, v, tiempo_visitado, predecesor, bajo, puntos_artic)
+			stack2 = assignNum(g, v, tiempo_visitado, predecesor, visitado, tiempo, arbol)
+			assignLow(g, v, tiempo_visitado, predecesor, bajo, puntos_artic, stack2)
 			raices.append(v)
 			# Como v es raiz del arbol, lo saco para analizarlo por separado
 			if (v in puntos_artic): # Aunque deberia estar incluida siempre
