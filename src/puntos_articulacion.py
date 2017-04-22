@@ -2,7 +2,7 @@ from parser import Parser
 from dfs_iterativo import DFSIterativo
 import time
 
-"""Utilizar como python puntosArticulacion.py"""
+"""Utilizar como python puntos_articulacion.py"""
 
 
 class PuntosArticulacion(object):
