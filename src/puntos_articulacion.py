@@ -14,7 +14,7 @@ class PuntosArticulacion(object):
         """Dado un grafo no dirigido, devuelve los puntos de articulacion"""
         # Inicializo variables
         visitado = {}
-        puntos_artic = set()
+        puntos_articulacion = set()
         for u in g.devolver_vertices():
             visitado[u] = False
 
@@ -24,12 +24,12 @@ class PuntosArticulacion(object):
                 dfs = DFSIterativo(g, v, visitado)
                 dfs.hacer_dfs()
                 # Como v es raiz del arbol, lo saco para analizarlo por separado
-                puntos_artic_v = dfs.get_puntos_artic()
-                if v in puntos_artic_v:  # Aunque deberia estar incluida siempre
-                    puntos_artic_v.remove(v)
-                self.analizar_raiz(dfs.get_predecesor(), puntos_artic_v, v)
-                puntos_artic.update(puntos_artic_v)
-        return puntos_artic
+                puntos_articulacion_v = dfs.get_puntos_articulacion()
+                if v in puntos_articulacion_v:  # Aunque deberia estar incluida siempre
+                    puntos_articulacion_v.remove(v)
+                self.analizar_raiz(dfs.get_predecesor(), puntos_articulacion_v, v)
+                puntos_articulacion.update(puntos_articulacion_v)
+        return puntos_articulacion
 
     def analizar_raiz(self, predecesor, puntos_artic, v):
         # Analizo la raiz como puntos de articulacion
@@ -45,7 +45,7 @@ class PuntosArticulacion(object):
 for i in [0, 7, 1, 2, 3, 4, 5, 6]:
     start = time.time()
     parser = Parser()
-    g = parser.leerGrafoNoDirigido("../in/ej2/g"+str(i)+".txt")
+    g = parser.leer_grafo_no_dirigido("../in/ej2/g" + str(i) + ".txt")
     puntos_artic = PuntosArticulacion(g).get_puntos_articulacion()
     print "Hay", len(puntos_artic), "puntos de articulacion"
     end = time.time()

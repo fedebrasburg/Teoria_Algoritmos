@@ -7,7 +7,7 @@ def crear_archivo_problema(nombre,m,n):
 	parser=Parser()
 	E,H,Q=crear_problema(m,n)
 	print "creado"
-	parser.escribirStableMatching(nombre,E,H,Q)
+	parser.escribir_stable_matching(nombre, E, H, Q)
 
 def crear_problema(m,n):
 	E=crear_lista_de_listas_al_azar(m,n)
@@ -22,7 +22,7 @@ def crear_lista_de_listas_al_azar(cantidad_de_elementos,cantidad_de_listas):
 	
 def resolver_archivo_problema(archivo):
 	parser=Parser()
-	E,H,Q=parser.leerStableMatching(archivo)
+	E,H,Q=parser.leer_stable_matching(archivo)
 	return resolver_problema(E,H,Q)
 
 def constrained_sum_sample_pos(n, total):

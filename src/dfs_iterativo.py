@@ -11,11 +11,11 @@ class DFSIterativo(object):
 		self.tiempo = Tiempo()
 		self.predecesor = {}
 		self.bajo = {}
-		self.puntos_artic = set()
+		self.puntos_articulacion = set()
 		for u in g.devolver_vertices():
 			self.predecesor[u] = None
 
-	def asignar_visitado(self):
+	def _asignar_visitado(self):
 		stack = [self.v]
 		stack_recorrido = [self.v]
 		while stack:
@@ -32,14 +32,14 @@ class DFSIterativo(object):
 					self.predecesor[w] = u
 		return stack_recorrido
 
-	def asignar_bajo(self, stack):
+	def _asignar_bajo(self, stack):
 		while stack:
 			u = stack.pop()
 			self.bajo[u] = self.tiempo_visitado[u]
 			for w in self.g.adyacentes(u):
 				if self.tiempo_visitado[w] > self.tiempo_visitado[u]:
 					if self.bajo[w] >= self.tiempo_visitado[u]:
-						self.puntos_artic.add(u)
+						self.puntos_articulacion.add(u)
 					self.bajo[u] = min(self.bajo[u], self.bajo[w])
 				elif w != self.predecesor[u]:
 					self.bajo[u] = min(self.bajo[u], self.tiempo_visitado[w])
@@ -47,9 +47,9 @@ class DFSIterativo(object):
 	def get_predecesor(self):
 		return self.predecesor
 
-	def get_puntos_artic(self):
-		return self.puntos_artic
+	def get_puntos_articulacion(self):
+		return self.puntos_articulacion
 
 	def hacer_dfs(self):
-		stack_recorrido = self.asignar_visitado()
-		self.asignar_bajo(stack_recorrido)
+		stack_recorrido = self._asignar_visitado()
+		self._asignar_bajo(stack_recorrido)
