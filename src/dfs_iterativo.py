@@ -1,4 +1,4 @@
-from dfs import Tiempo
+from tiempo import Tiempo
 
 
 class DFSIterativo(object):

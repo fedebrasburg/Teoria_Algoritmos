@@ -1,3 +1,0 @@
-El problema de asignacion 1 tardo 0.00866603851318
-El problema de asignacion 2 tardo 0.756355047226
-El problema de asignacion 3 tardo 85.6384279728
