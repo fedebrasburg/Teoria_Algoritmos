@@ -23,8 +23,8 @@ class PuntosArticulacion(object):
                 # Armo el arbol DFS desde v
                 dfs = DFSIterativo(grafo, v, visitado)
                 dfs.hacer_dfs()
-                # Como v es raiz del arbol, lo saco para analizarlo por separado
                 puntos_articulacion_v = dfs.get_puntos_articulacion()
+                # Como v es raiz del arbol, lo saco para analizarlo por separado
                 if v in puntos_articulacion_v:  # Aunque deberia estar incluida siempre
                     puntos_articulacion_v.remove(v)
                 self.analizar_raiz(dfs.get_predecesor(), puntos_articulacion_v, v)
@@ -42,11 +42,11 @@ class PuntosArticulacion(object):
             puntos_articulacion.add(v)
 
 
-for i in [0, 7, 1, 2, 3, 4, 5, 6]:
+for i in [0, 1, 2, 3, 4, 5, 6, 7]:
     start = time.time()
     parser = Parser()
     grafo = parser.leer_grafo_no_dirigido("../in/ej2/g" + str(i) + ".txt")
-    puntos_artic = PuntosArticulacion(grafo).get_puntos_articulacion()
-    print "Hay", len(puntos_artic), "puntos de articulacion"
+    puntos_articulacion = PuntosArticulacion(grafo).get_puntos_articulacion()
+    print "Hay", len(puntos_articulacion), "puntos de articulacion"
     end = time.time()
     print("Con " + str(grafo.devolver_cant_vertices()) + " vertices y " + str(len(grafo.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")
