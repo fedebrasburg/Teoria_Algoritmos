@@ -3,6 +3,8 @@ from grafo import trasponer
 from dfs import DFS
 import time
 
+"""Utilizar como python CFC.py"""
+
 
 class CFC(object):
 
@@ -18,7 +20,7 @@ class CFC(object):
 for i in [0, 1, 2, 3, 4, 5, 6]:
     start = time.time()
     parser = Parser()
-    g = parser.leer_grafo_dirigido("../in/ej3/d" + str(i) + ".txt")
-    CFC(g).get_CFC()
+    grafo = parser.leer_grafo_dirigido("../in/ej3/d" + str(i) + ".txt")
+    CFC(grafo).get_CFC()
     end = time.time()
-    print("Con " + str(g.devolver_cant_vertices()) + " vertices y " + str(len(g.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")
+    print("Con " + str(grafo.devolver_cant_vertices()) + " vertices y " + str(len(grafo.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")

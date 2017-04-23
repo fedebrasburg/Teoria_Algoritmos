@@ -15,13 +15,13 @@ class PuntosArticulacion(object):
         # Inicializo variables
         visitado = {}
         puntos_articulacion = set()
-        for u in g.devolver_vertices():
+        for u in grafo.devolver_vertices():
             visitado[u] = False
 
-        for v in g.devolver_vertices():
+        for v in grafo.devolver_vertices():
             if not visitado[v]:
                 # Armo el arbol DFS desde v
-                dfs = DFSIterativo(g, v, visitado)
+                dfs = DFSIterativo(grafo, v, visitado)
                 dfs.hacer_dfs()
                 # Como v es raiz del arbol, lo saco para analizarlo por separado
                 puntos_articulacion_v = dfs.get_puntos_articulacion()
@@ -45,8 +45,8 @@ class PuntosArticulacion(object):
 for i in [0, 7, 1, 2, 3, 4, 5, 6]:
     start = time.time()
     parser = Parser()
-    g = parser.leer_grafo_no_dirigido("../in/ej2/g" + str(i) + ".txt")
-    puntos_artic = PuntosArticulacion(g).get_puntos_articulacion()
+    grafo = parser.leer_grafo_no_dirigido("../in/ej2/g" + str(i) + ".txt")
+    puntos_artic = PuntosArticulacion(grafo).get_puntos_articulacion()
     print "Hay", len(puntos_artic), "puntos de articulacion"
     end = time.time()
-    print("Con " + str(g.devolver_cant_vertices()) + " vertices y " + str(len(g.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")
+    print("Con " + str(grafo.devolver_cant_vertices()) + " vertices y " + str(len(grafo.devolver_aristas())) + " aristas, tardo: " + str(end - start) + " segundos")

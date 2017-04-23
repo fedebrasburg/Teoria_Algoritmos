@@ -46,30 +46,6 @@ class Grafo(object):
         """Devuelve los nodos del grafo"""
         return len(self.vertices)
 
-    def existe_nodo(self, id):
-        """Devuelve True si existe el nodo"""
-        return id in self.vertices
-
-    def borrar_vertice(self, id):
-        """Borra un vertice que se identifica con ID (si tiene aristas asociadas levanta ValueError)"""
-        if self.existe_nodo(id) and len(self.aristas[id]) == 0:
-            self.vertices.remove(id)
-            self.aristas.pop(id)
-        else:
-            raise ValueError
-
-    def borrar_arista_no_dirigida(self, id1, id2):
-        """Borra una arista entre id1 y id2 (si no existe devuelve error)"""
-        self.borrar_arista_dirigida(id1, id2)
-        self.borrar_arista_dirigida(id2, id1)
-
-    def borrar_arista_dirigida(self, id1, id2):
-        """Borra una arista entre id1 y id2 (si no existe devuelve error)"""
-        if id2 in self.aristas[id1]:
-            self.aristas[id1].pop(id2)
-        else:
-            raise ValueError
-
     def agregar_vertice(self, id):
         """Agrega un vertice que se identifica con un nombre y un ID"""
         self.vertices.append(id)

@@ -28,10 +28,10 @@ def resolver_archivo_problema(archivo):
     E, H, Q = parser.leer_stable_matching(archivo)
     return resolver_problema(E, H, Q)
 
-def resolver_archivo_problema_con_archivo_salida(archivo_problema,archivo_salida):
+def resolver_archivo_problema_con_archivo_salida(archivo_problema, archivo_salida):
     parser = Parser()
     E, H, Q = parser.leer_stable_matching(archivo_problema)
-    P= resolver_problema(E, H, Q)
+    P = resolver_problema(E, H, Q)
     f = open(archivo_salida, 'w')
     f.write(str(P))
     f.close()
