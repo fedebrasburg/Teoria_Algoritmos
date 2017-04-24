@@ -42,7 +42,7 @@ class PuntosArticulacion(object):
             puntos_articulacion.add(v)
 
 
-for i in [0, 1, 2, 3, 4, 5, 6, 7]:
+for i in [0, 7, 1, 2, 3, 4, 5, 6]:
     start = time.time()
     parser = Parser()
     grafo = parser.leer_grafo_no_dirigido("../in/ej2/g" + str(i) + ".txt")
