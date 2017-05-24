@@ -33,11 +33,7 @@ class Grafo(object):
         
     def devolver_aristas(self):
         """Devuelve las aristas del grafo"""
-        lista_aristas = []
-        for dic_aristas in self.aristas.values():
-            for aristas in dic_aristas.values():
-                lista_aristas += [aristas]
-        return lista_aristas
+        return self.aristas
 
     def devolver_vertices(self):
         return self.vertices
@@ -62,7 +58,12 @@ class Grafo(object):
 
     def son_vecinos(self, id1, id2):
         """Devuelve si id1 y id2 son vecinos"""
-        return id2 in self.aristas[id1].keys()  # Azucar sintactico
+        try:
+            if (self.aristas[id1][id2]):
+                return True
+            return False
+        except:
+            return False
 
     def peso_arista(self, id1, id2):
         """Devuelve el peso de la arista entre id1 e id2"""
