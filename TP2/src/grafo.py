@@ -1,5 +1,6 @@
 PRIMERO = 0
 SEGUNDO = 1
+TERCERO = 2
 
 
 class Arista(object):
@@ -89,11 +90,15 @@ class Grafo(object):
             for i in range(0, cant_aristas):
                 linea = mi_arch.readline()
                 numeros = linea.split(" ")
-                numeros[SEGUNDO] = numeros[SEGUNDO].rstrip('\n')
-                if dirigido:
-                    self.agregar_arista_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]))
+                peso = 0
+                if len(numero) > 2:
+                    peso = numeros[TERCERO].rstrip('\n')
                 else:
-                    self.agregar_arista_no_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]))
+                    numeros[SEGUNDO] = numeros[SEGUNDO].rstrip('\n')
+                if dirigido:
+                    self.agregar_arista_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]),peso)
+                else:
+                    self.agregar_arista_no_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]),peso)
             mi_arch.close()
             return True
         except:

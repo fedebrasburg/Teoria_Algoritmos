@@ -1,4 +1,5 @@
 import grafo
+import random
  
 def crearDigrafoCompleto(n,nombre):
 	cantVertices = n * (n-1)
@@ -8,6 +9,6 @@ def crearDigrafoCompleto(n,nombre):
 	for i in range(n):
 		for j in range(n):
 			if i != j:
-				file.write(str(i) + " " + str(j) + "\n")
+				file.write(str(i) + " " + str(j) + " " + str(random.random()*2) + " " + "\n")
 	file.close() 
 
