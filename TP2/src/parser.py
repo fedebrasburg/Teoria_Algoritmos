@@ -5,7 +5,6 @@ UNO = 1
 
 
 class Parser(object):
-
     def leer_grafo_no_dirigido(self, nombre):
         """Lee un archivo de un grafo no dirigido sin peso"""
         try:
