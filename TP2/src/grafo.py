@@ -17,13 +17,13 @@ class Arista(object):
 
 
 def trasponer(g):
-        """Traspone el mismo grafo"""
-        g_t = Grafo()
-        for vertice in g.devolver_vertices():
-            g_t.agregar_vertice(vertice)
-        for arista in g.devolver_aristas():
-            g_t.agregar_arista_dirigida(arista.id2, arista.id1, arista.peso)
-        return g_t
+    """Traspone el mismo grafo"""
+    g_t = Grafo()
+    for vertice in g.devolver_vertices():
+        g_t.agregar_vertice(vertice)
+    for arista in g.devolver_aristas():
+        g_t.agregar_arista_dirigida(arista.id2, arista.id1, arista.peso)
+    return g_t
 
 
 class Grafo(object):
@@ -31,7 +31,7 @@ class Grafo(object):
         """Crea un Grafo dirigido (o no) con aristas pesadas (o no)"""
         self.aristas = {}
         self.vertices = []
-        
+
     def devolver_aristas(self):
         """Devuelve las aristas del grafo"""
         return self.aristas
@@ -91,14 +91,14 @@ class Grafo(object):
                 linea = mi_arch.readline()
                 numeros = linea.split(" ")
                 peso = 0
-                if len(numero) > 2:
+                if len(numeros) > 2:
                     peso = numeros[TERCERO].rstrip('\n')
                 else:
                     numeros[SEGUNDO] = numeros[SEGUNDO].rstrip('\n')
                 if dirigido:
-                    self.agregar_arista_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]),peso)
+                    self.agregar_arista_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]), peso)
                 else:
-                    self.agregar_arista_no_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]),peso)
+                    self.agregar_arista_no_dirigida(int(numeros[PRIMERO]), int(numeros[SEGUNDO]), peso)
             mi_arch.close()
             return True
         except:
