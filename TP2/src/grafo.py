@@ -16,25 +16,19 @@ class Arista(object):
         return str(self.id1) + " a " + str(self.id2) + ", peso " + str(self.peso)
 
 
-def trasponer(g):
-    """Traspone el mismo grafo"""
-    g_t = Grafo()
-    for vertice in g.devolver_vertices():
-        g_t.agregar_vertice(vertice)
-    for arista in g.devolver_aristas():
-        g_t.agregar_arista_dirigida(arista.id2, arista.id1, arista.peso)
-    return g_t
-
-
 class Grafo(object):
     def __init__(self):
         """Crea un Grafo dirigido (o no) con aristas pesadas (o no)"""
         self.aristas = {}
         self.vertices = []
+        self.aristas_list = []
 
     def devolver_aristas(self):
         """Devuelve las aristas del grafo"""
         return self.aristas
+
+    def devolver_aristas_list(self):
+        return self.aristas_list
 
     def devolver_vertices(self):
         return self.vertices
@@ -55,7 +49,9 @@ class Grafo(object):
 
     def agregar_arista_dirigida(self, id1, id2, peso=0):
         """Agrego una arista dirigida entre los nodos con id1 y id2"""
-        self.aristas[id1][id2] = Arista(id1, id2, peso)
+        arista = Arista(id1, id2, peso)
+        self.aristas[id1][id2] = arista
+        self.aristas_list.append(arista)
 
     def son_vecinos(self, id1, id2):
         """Devuelve si id1 y id2 son vecinos"""
