@@ -1,6 +1,6 @@
 import heapq
 
-INFINITO = float("inf")  # Truco magico de python none < any int < any string
+INFINITO = float("inf")
 CERO = 0
 
 
@@ -9,7 +9,7 @@ class Dijkstra(object):
         self.grafo = grafo
 
     def _inicializar_iterador(self):
-        """Iniciliza variables del iterador"""
+        """Inicializa variables del iterador"""
         visitado = {}
         distancia = {}
         padre = {}
@@ -20,19 +20,19 @@ class Dijkstra(object):
         return visitado, padre, distancia
 
     def dijkstra(self, ID):
-        """Realiza el algoritmo de Djikstra, devuelve las distancias y los padres encontrados desde el ID"""
+        """Realiza el algoritmo de Dijkstra, devuelve las distancias y los padres encontrados desde el ID"""
         vertices = self.grafo.devolver_vertices()
-        if not ID in vertices: return
+        if ID not in vertices:
+            return
         heap = []
         visitado, padre, distancia = self._inicializar_iterador()
         distancia[ID] = CERO
         nodo = Nodo(ID, distancia[ID], padre[ID])
         heapq.heappush(heap, nodo)
-        while (heap):
+        while heap:
             nodo = heapq.heappop(heap)
             ID = nodo.ID
-            print ID
-            if (not visitado[ID]):
+            if not visitado[ID]:
                 visitado[ID] = True
                 padre[ID] = nodo.padre
                 distancia[ID] = nodo.distancia
@@ -49,9 +49,9 @@ class Nodo(object):
         self.padre = padre
 
     def __cmp__(self, otro):
-        if (self.distancia == otro.distancia):
+        if self.distancia == otro.distancia:
             return 0
-        if (self.distancia > otro.distancia):
+        if self.distancia > otro.distancia:
             return 1
         return -1
 

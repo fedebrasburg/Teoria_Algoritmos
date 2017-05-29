@@ -1,5 +1,4 @@
-INFINITO = float("inf")  # Truco magico de python none < any int < any string
-CERO = 0
+INFINITO = float("inf")
 
 
 class BellmanFord(object):
@@ -17,13 +16,11 @@ class BellmanFord(object):
     def bellmanFord(self, ID):
         vertices = self.grafo.devolver_vertices()
         aristas = self.grafo.devolver_aristas()
-        print aristas
         padre, distancia = self._inicializar_iterador()
         distancia[ID] = 0
         for i in vertices:
             for u in aristas:
                 for v in aristas[u]:
-                    print aristas[u][v].peso
                     w = aristas[u][v].peso
                     if distancia[u] + w < distancia[v]:
                         distancia[v] = distancia[u] + w
