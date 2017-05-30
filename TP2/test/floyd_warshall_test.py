@@ -1,5 +1,7 @@
-from TP2.src.floyd_warshall import FloydWarshall
-from TP2.src.grafo import Grafo
+import sys
+sys.path.append('../src')
+from grafo import Grafo
+from floyd_warshall import FloydWarshall
 
 g = Grafo()
 g.agregar_vertice(0)
@@ -17,7 +19,7 @@ g.agregar_arista_dirigida(3, 0, 2)
 g.agregar_arista_dirigida(3, 2, -5)
 g.agregar_arista_dirigida(4, 3, 6)
 fw = FloydWarshall(g)
-print "Matriz\n", fw.floydWarshall()
+print "Matriz 1\n", fw.floydWarshall()
 
 g2 = Grafo()
 g2.agregar_vertice(0)

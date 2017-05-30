@@ -1,5 +1,7 @@
-from TP2.src.dijkstra import Dijkstra
-from TP2.src.grafo import Grafo
+import sys
+sys.path.append('../src')
+from grafo import Grafo
+from dijkstra import Dijkstra
 
 g = Grafo()
 g.agregar_vertice(0)

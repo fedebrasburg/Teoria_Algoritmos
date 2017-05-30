@@ -1,5 +1,7 @@
-from TP2.src.bellman_ford import BellmanFord
-from TP2.src.grafo import Grafo
+import sys
+sys.path.append('../src')
+from grafo import Grafo
+from bellman_ford import BellmanFord
 
 g = Grafo()
 g.agregar_vertice(0)
