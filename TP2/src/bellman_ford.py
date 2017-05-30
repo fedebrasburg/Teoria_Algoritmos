@@ -21,8 +21,11 @@ class BellmanFord(object):
         for i in vertices:
             for u in aristas:
                 for v in aristas[u]:
-                    w = aristas[u][v].peso
+                    w = float(aristas[u][v].peso)
                     if distancia[u] + w < distancia[v]:
                         distancia[v] = distancia[u] + w
                         padre[v] = u
         return padre, distancia
+
+    def resolver_camino_minimo(self,ID):
+        return self.bellmanFord(ID)

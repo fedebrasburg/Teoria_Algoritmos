@@ -4,15 +4,16 @@ INFINITO = float("inf")
 class FloydWarshall(object):
     def __init__(self, grafo):
         self.grafo = grafo
+        
+
+    def floydWarshall(self):
         n = self.grafo.devolver_cant_vertices()
         self.camino = [[INFINITO for i in range(n)] for j in range(n)]
         for i in range(n):
             self.camino[i][i] = 0
-
-    def floydWarshall(self):
         aristas = self.grafo.devolver_aristas_list()
         for a in aristas:
-            self.camino[a.id1][a.id2] = a.peso
+            self.camino[a.id1][a.id2] = float(a.peso)
 
         vertices = self.grafo.devolver_vertices()
         for k in vertices:
@@ -22,3 +23,6 @@ class FloydWarshall(object):
                     if self.camino[i][j] > nuevo_camino:
                         self.camino[i][j] = nuevo_camino
         return self.camino
+
+    def resolver_camino_minimo(self):
+        return self.floydWarshall()
