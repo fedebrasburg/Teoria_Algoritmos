@@ -11,9 +11,8 @@ from os.path import isfile
 FLOYDWARSHALL = 0
 DIJKSTRA = 1
 BELLMANFORD = 2
-cantidad_de_algoritmos = 3
 
-grafos_a_probar = range(0, cantidad_de_algoritmos)
+grafos_a_probar = {}
 grafos_a_probar[FLOYDWARSHALL] = [10, 20, 50, 100, 250]
 grafos_a_probar[DIJKSTRA] = [10, 20, 50, 100, 250, 500, 1000, 1500, 2000, 2500]
 grafos_a_probar[BELLMANFORD] = [10, 20, 50, 100]
@@ -36,7 +35,7 @@ def crear_grafos_de_prueba():
 def realizar_pruebas():
     parser = Parser()
     lista_iteraciones = []
-    algoritmos = range(0,cantidad_de_algoritmos)
+    algoritmos = [FLOYDWARSHALL, DIJKSTRA, BELLMANFORD]
 
     grafos_dict = {}
     for tamanio_grafo in grafos_utilizados:
@@ -58,6 +57,17 @@ def realizar_pruebas():
                     algoritmo.resolver_camino_minimo(str(i))
             end = time.time()
             lista_iteraciones.append((algoritmo.__class__.__name__, str(tamanio_grafo), str(end - start)))
+
+    for numero_de_algoritmo in [DIJKSTRA, BELLMANFORD]:
+        grafos = grafos_a_probar[numero_de_algoritmo]
+        for tamanio_grafo in grafos:
+            grafo = grafos_dict[tamanio_grafo]
+            algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
+            print algoritmo.__class__.__name__, tamanio_grafo
+            start = time.time()
+            algoritmo.resolver_camino_minimo(str(i))
+            end = time.time()
+            lista_iteraciones.append((algoritmo.__class__.__name__+"_unitario", str(tamanio_grafo), str(end - start)))
 
     f = open("../out/corrida_tiempo.csv", 'wt')
     try:
