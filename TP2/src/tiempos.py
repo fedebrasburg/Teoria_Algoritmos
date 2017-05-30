@@ -61,7 +61,7 @@ def realizar_pruebas():
                 algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
                 print "\t" + algoritmo.__class__.__name__ + "_unitario"
                 start = time.time()
-                algoritmo.resolver_camino_minimo(str(i))
+                algoritmo.resolver_camino_minimo(str(0))
                 end = time.time()
                 lista_iteraciones.append((algoritmo.__class__.__name__+"_unitario", str(tamanio_grafo), str(end - start)))
 
