@@ -37,42 +37,39 @@ def realizar_pruebas():
     lista_iteraciones = []
     algoritmos = [FLOYDWARSHALL, DIJKSTRA, BELLMANFORD]
 
-    grafos_dict = {}
     for tamanio_grafo in grafos_utilizados:
         print 'Leyendo grafo de tamanio ' + str(tamanio_grafo)
         grafo = parser.leer_grafo_dirigido("../in/grafoprueba" + str(tamanio_grafo) + ".txt")
-        grafos_dict[tamanio_grafo] = grafo
 
-    for numero_de_algoritmo in algoritmos:
-        grafos = grafos_a_probar[numero_de_algoritmo]
-        for tamanio_grafo in grafos:
-            grafo = grafos_dict[tamanio_grafo]
-            algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
-            print algoritmo.__class__.__name__, tamanio_grafo
-            start = time.time()
-            if numero_de_algoritmo == FLOYDWARSHALL:
-                algoritmo.resolver_camino_minimo()
-            else:
-                for i in range(0, tamanio_grafo - 1):
-                    algoritmo.resolver_camino_minimo(str(i))
-            end = time.time()
-            lista_iteraciones.append((algoritmo.__class__.__name__, str(tamanio_grafo), str(end - start)))
+        #  Analizo los algoritmos para todos los caminos minimos del grafo
+        for numero_de_algoritmo in algoritmos:
+            if tamanio_grafo in grafos_a_probar[numero_de_algoritmo]:
+                algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
+                print "\t" + algoritmo.__class__.__name__
+                start = time.time()
+                if numero_de_algoritmo == FLOYDWARSHALL:
+                    algoritmo.resolver_camino_minimo()
+                else:
+                    for i in range(0, tamanio_grafo - 1):
+                        algoritmo.resolver_camino_minimo(str(i))
+                end = time.time()
+                lista_iteraciones.append((algoritmo.__class__.__name__, str(tamanio_grafo), str(end - start)))
 
-    for numero_de_algoritmo in [DIJKSTRA, BELLMANFORD]:
-        grafos = grafos_a_probar[numero_de_algoritmo]
-        for tamanio_grafo in grafos:
-            grafo = grafos_dict[tamanio_grafo]
-            algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
-            print algoritmo.__class__.__name__, tamanio_grafo
-            start = time.time()
-            algoritmo.resolver_camino_minimo(str(i))
-            end = time.time()
-            lista_iteraciones.append((algoritmo.__class__.__name__+"_unitario", str(tamanio_grafo), str(end - start)))
+        #  Analizo Dijkstra y Bellman-Ford en forma "unitaria" (Es decir, para un unico origen)
+        for numero_de_algoritmo in [DIJKSTRA, BELLMANFORD]:
+            if tamanio_grafo in grafos_a_probar[numero_de_algoritmo]:
+                algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
+                print "\t" + algoritmo.__class__.__name__ + "_unitario"
+                start = time.time()
+                algoritmo.resolver_camino_minimo(str(i))
+                end = time.time()
+                lista_iteraciones.append((algoritmo.__class__.__name__+"_unitario", str(tamanio_grafo), str(end - start)))
 
+    #  Creo archivo .csv para crear los graficos facilmente
     f = open("../out/corrida_tiempo.csv", 'wt')
     try:
         writer = csv.writer(f)
-        writer.writerow(('Algoritmo', 'tamanio', 'tiempo'))
+        writer.writerow(('Algoritmo', 'Tamanio', 'Tiempo'))
         for corrida in lista_iteraciones:
             writer.writerow((corrida))
     finally:
