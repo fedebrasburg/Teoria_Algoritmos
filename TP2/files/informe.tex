@@ -90,12 +90,12 @@
 \subsection{Punto 3}
 	Utilizando el método especificado en \ref{punto2}, pasamos a demostrar que el problema del camino Hamiltoniano es un problema NP-Completo:
 
-	$\bullet$ Demuestro que está en NP
+	$\bullet$ Demostramos que está en NP
 
 	Esto es trivial en el problema: dado un certificado que sería una secuencia de vértices del grafo simplemente hay que comprobar que existe una arista que va desde un determinado vértice al siguiente en la secuencia. Tomando en cuenta que la secuencia cuenta con todos los vértices, esta comprobación es de tiempo lineal. Expresado de manera formal sería:
-	\emph{Dado  una secuencia (V\textsubscript{Inicial}, ...,V\textsubscript{Final}) de tamaño |V|, $\exists$ (V\textsubscript{i}, V\textsubscript{i+1}) $\in$ E $\forall$ i=1..N $\wedge$ $\exists$ (V\textsubscript{Final},V\textsubscript{Inicial}) $\in$ E }
+	\emph{Dado  una secuencia (V\textsubscript{Inicial}, ...,V\textsubscript{Final}) de tamaño |V|, $\exists$ (V\textsubscript{i}, V\textsubscript{i+1}) $\in$ E $\forall$ i=1..N $\wedge$ $\exists$ (V\textsubscript{Final},V\textsubscript{Inicial}) $\in$ E } \\
 
-	$\bullet$ Lo reduzco a un problema NP-Completo:
+	$\bullet$ Lo reducimos a un problema NP-Completo:
 
 	Vamos a reducir el problema a 3-SAT usando un \textbf{``gadget''}.
 
@@ -108,7 +108,7 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[scale=0.5]{images/grafo-3-1.jpg}
+		\includegraphics[scale=0.35]{images/grafo-3-1.jpg}
 		\caption{Grafo resultante de la reducción de 3-SAT.}
 		\label{fig:punto-3-1}
 	\end{figure}
@@ -119,7 +119,7 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[scale=0.5]{images/grafo-3-2.jpg}
+		\includegraphics[scale=0.35]{images/grafo-3-2.jpg}
 		\caption{Grafo final de la reducción de 3-SAT.}
 		\label{fig:punto-3-2}
 	\end{figure}
@@ -186,17 +186,18 @@
 	$\bullet$ El problema es NP
 
 	Esto es relativamente simple. Básicamente, recibiendo una instancia (un grafo) y un certificado (Un conjunto de vértices y aristas indicando el ciclo), habría que comprobar que es un ciclo (Lo cual se puede comprobar en $O(|V|+|A|))$ y que la suma de los pesos de las aristas es 0.
+	\linebreak
 
 	$\bullet$ El problema es NP-Hard
 
 	Para esto, se utiliza algún problema NP-Completo de tal manera que, reduciendo ese problema al nuestro en tiempo polinomial, se demuestra que nuestro problema es al menos tan difícil que dicho problema NP-Completo. En este caso, el problema NPC a utilizar va a ser Subset Sum, ya que por su naturaleza (Ver si dentro de un conjunto de números hay un subconjunto cuya suma es igual a 0), parecería una buena elección para nuestro problema. Entonces, hay que encontrar una transformación polinómica para demostrar que:
 
-	\texttt{Subset Sum $\leq$\textsubscript{p} ZWC (Zero Weight Cycle)}
+	\texttt{Subset Sum $\leq_p$ ZWC (Zero Weight Cycle)}
 	\linebreak
 
 	La idea de la reducción es, dado un conjunto $S={x_1, x_2, ..., x_n}$ de números, generar un grafo completo de $n$ vértices, donde a cada vértice $i$, desde cada uno de los otros, entre una arista con peso $x_i$. Así se puede asegurar que, al ser completo, siempre que exista un ciclo de peso 0, existirá un subconjunto $T \subseteq S$, cuya suma sea igual a 0. El único caso particular a tener en cuenta ya que traería problemas, es si dentro de $S$ se encuentra el número 0. En ese caso, la idea sería detectar antes de pasarlo al grafo y devolver directamente que existe el subconjunto con suma igual a 0 (Ya que sino no se detectaría el grafo con camino de peso igual a 0). Por último, cabe aclarar que dicha transformación es polinómica, ya que para generar el grafo completo dado el conjunto $S$, se requiere la creación de $n$ vértices y $n.(n-1)$ aristas. Es decir, la transformación es $O(n^2)$.
 
-	Por ejemplo, dado el conjunto $S = \{5, 4, -2, -3\}$, el grafo y su respectiva solución sería el de la figura \ref{fig:punto-6} siguiente:
+	Por ejemplo, dado el conjunto $S = \{5, 4, -2, -3\}$, el grafo y su respectiva solución sería el de la figura \ref{fig:punto-6}.
 
 	\begin{figure}[!htb]
 		\centering
