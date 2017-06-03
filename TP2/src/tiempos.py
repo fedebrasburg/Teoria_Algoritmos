@@ -2,7 +2,6 @@ from creador_grafos import crearDigrafoCompleto
 from bellman_ford import BellmanFord
 from floyd_warshall import FloydWarshall
 from dijkstra import Dijkstra
-from grafo import Grafo
 from parser import Parser
 import time
 import csv
@@ -30,19 +29,18 @@ def crear_grafos_de_prueba():
     for tamanio_grafo in grafos_utilizados:
         path = "../in/grafoprueba" + str(tamanio_grafo) + ".txt"
         if not isfile(path):
-            crearDigrafoCompleto(tamanio_grafo,path)
+            crearDigrafoCompleto(tamanio_grafo, path)
 
 def realizar_pruebas():
     parser = Parser()
     lista_iteraciones = []
-    algoritmos = [FLOYDWARSHALL, DIJKSTRA, BELLMANFORD]
 
     for tamanio_grafo in grafos_utilizados:
         print 'Leyendo grafo de tamanio ' + str(tamanio_grafo)
         grafo = parser.leer_grafo_dirigido("../in/grafoprueba" + str(tamanio_grafo) + ".txt")
 
         #  Analizo los algoritmos para todos los caminos minimos del grafo
-        for numero_de_algoritmo in algoritmos:
+        for numero_de_algoritmo in [FLOYDWARSHALL, DIJKSTRA, BELLMANFORD]:
             if tamanio_grafo in grafos_a_probar[numero_de_algoritmo]:
                 algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
                 print "\t" + algoritmo.__class__.__name__
@@ -71,7 +69,7 @@ def realizar_pruebas():
         writer = csv.writer(f)
         writer.writerow(('Algoritmo', 'Tamanio', 'Tiempo'))
         for corrida in lista_iteraciones:
-            writer.writerow((corrida))
+            writer.writerow(corrida)
     finally:
         f.close()
 
