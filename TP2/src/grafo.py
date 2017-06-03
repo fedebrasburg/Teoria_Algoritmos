@@ -56,7 +56,7 @@ class Grafo(object):
     def son_vecinos(self, id1, id2):
         """Devuelve si id1 y id2 son vecinos"""
         try:
-            if (self.aristas[id1][id2]):
+            if self.aristas[id1][id2]:
                 return True
             return False
         except:

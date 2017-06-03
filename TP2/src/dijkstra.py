@@ -41,7 +41,7 @@ class Dijkstra(object):
                     heapq.heappush(heap, nodo_nuevo)
         return distancia, padre
 
-    def resolver_camino_minimo(self,ID):
+    def resolver_camino_minimo(self, ID):
         return self.dijkstra(ID)
 
 class Nodo(object):

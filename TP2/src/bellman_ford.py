@@ -27,5 +27,5 @@ class BellmanFord(object):
                         padre[v] = u
         return padre, distancia
 
-    def resolver_camino_minimo(self,ID):
+    def resolver_camino_minimo(self, ID):
         return self.bellmanFord(ID)

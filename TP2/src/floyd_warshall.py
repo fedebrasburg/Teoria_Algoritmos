@@ -5,7 +5,6 @@ class FloydWarshall(object):
     def __init__(self, grafo):
         self.grafo = grafo
         
-
     def floydWarshall(self):
         n = self.grafo.devolver_cant_vertices()
         self.camino = [[INFINITO for i in range(n)] for j in range(n)]
