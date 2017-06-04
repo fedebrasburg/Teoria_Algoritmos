@@ -6,15 +6,16 @@ class FloydWarshall(object):
         self.grafo = grafo
         
     def floydWarshall(self):
+        """Algoritmo de Floyd Warshall"""
         n = self.grafo.devolver_cant_vertices()
-        self.camino = [[INFINITO for i in range(n)] for j in range(n)]
+        self.camino = [[INFINITO for i in range(n)] for j in range(n)] #Inicializo todos las distancias de la matriz en infinito
         for i in range(n):
-            self.camino[i][i] = 0
+            self.camino[i][i] = 0 #Inicializo las distancias de un nodo a si mismo en 0
         aristas = self.grafo.devolver_aristas_list()
         for a in aristas:
-            self.camino[a.id1][a.id2] = float(a.peso)
+            self.camino[a.id1][a.id2] = float(a.peso) 
 
-        vertices = self.grafo.devolver_vertices()
+        vertices = self.grafo.devolver_vertices() 
         for k in vertices:
             for j in vertices:
                 for i in vertices:

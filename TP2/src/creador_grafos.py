@@ -9,5 +9,5 @@ def crearDigrafoCompleto(n, nombre):
     for i in range(n):
         for j in range(n):
             if i != j:
-                arch.write(str(i) + " " + str(j) + " " + str(random.random() * 2) + " " + "\n")
+                arch.write(str(i) + " " + str(j) + " " + str(random.random() * 2) + " " + "\n")#Crea una arista de el vertice i al vertice j con un valor al azar entre 0 y 2
     arch.close()
