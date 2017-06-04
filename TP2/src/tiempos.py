@@ -13,9 +13,9 @@ BELLMANFORD = 2
 
 grafos_a_probar = {}
 grafos_a_probar[FLOYDWARSHALL] = [10, 20, 50, 100, 250]
-grafos_a_probar[DIJKSTRA] = [10, 20, 50, 100, 250, 500, 1000, 1500, 2000, 2500]
+grafos_a_probar[DIJKSTRA] = [10, 20, 50, 100, 250, 500, 1000]
 grafos_a_probar[BELLMANFORD] = [10, 20, 50, 100]
-grafos_utilizados = [10, 20, 50, 100, 250, 500, 1000, 1500, 2000, 2500]
+grafos_utilizados = [10, 20, 50, 100, 250, 500, 1000]
 
 def devolver_algoritmo(n, grafo):
     if n == FLOYDWARSHALL:
@@ -40,7 +40,7 @@ def realizar_pruebas():
         grafo = parser.leer_grafo_dirigido("../in/grafoprueba" + str(tamanio_grafo) + ".txt")
 
         #  Analizo los algoritmos para todos los caminos minimos del grafo
-        for numero_de_algoritmo in [FLOYDWARSHALL, DIJKSTRA, BELLMANFORD]:
+        for numero_de_algoritmo in [DIJKSTRA]:
             if tamanio_grafo in grafos_a_probar[numero_de_algoritmo]:
                 algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
                 print "\t" + algoritmo.__class__.__name__
@@ -54,7 +54,7 @@ def realizar_pruebas():
                 lista_iteraciones.append((algoritmo.__class__.__name__, str(tamanio_grafo), str(end - start)))
 
         #  Analizo Dijkstra y Bellman-Ford en forma "unitaria" (Es decir, para un unico origen)
-        for numero_de_algoritmo in [DIJKSTRA, BELLMANFORD]:
+        for numero_de_algoritmo in [DIJKSTRA]:
             if tamanio_grafo in grafos_a_probar[numero_de_algoritmo]:
                 algoritmo = devolver_algoritmo(numero_de_algoritmo, grafo)
                 print "\t" + algoritmo.__class__.__name__ + "_unitario"

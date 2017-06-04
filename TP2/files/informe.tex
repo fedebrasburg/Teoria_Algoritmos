@@ -210,7 +210,7 @@
 
 \section{Algoritmos de camino mínimo}
 \subsection{Dijkstra}
-	Dijkstra funciona de manera Greedy, donde dado un origen busca en cada iteración el camino más corto a todos los nodos. Optimizado, el algoritmo es $O(|A|+|V|.log(|V|))$.
+	Dijkstra funciona de manera Greedy, donde dado un origen busca en cada iteración el camino más corto a todos los nodos. Optimizado utilizando una estructura de tipo $heap$ para encontrar la menor distancia en cada paso, el algoritmo es $O(|A|+|V|.log(|V|))$.
 
 \subsection{Bellman-Ford}
 	El algoritmo de Bellman-Ford es un algoritmo de programación dinámica. Funciona análogamente al de Dijkstra pero en vez de buscar en cada iteración la arista de peso mínimo, relaja (es decir, recalcula la distancia para todos los nodos) en cada iteración todas las aristas, realizándolo para cada nodo. El tiempo de ejecución del algoritmo es $O(|A|.|V|)$.
@@ -252,22 +252,22 @@
 
 	Primero, cabe destacar que las primeras 3 columnas se corresponden con el problema de caminos mínimos para todos los nodos con todos. En los casos de Dijkstra y Bellman-Ford, lo que se hizo es correr n veces dicho algoritmo. Las últimas 2 columnas se corresponden con una única corrida de Dijkstra y Bellman-Ford, con un origen cualquiera.
 
-	Dicho esto, podemos ver que, entre 10 y 100 por ejemplo, Floyd-Warshall aumenta su tiempo con un orden de magnitud $O(|V|^3)$, así como Bellman-Ford en $O(|V|^3)$ en el caso ``unitario'' y en $O(|V|^4)$ en el otro caso. A su vez, Dijkstra . Cabe recordar que en este caso, al ser un grafo completo $|A| \cong |V|^2$. Por el tipo de crecimiento de cada algoritmo es que se pudo correr más o menos grafos para cada uno.
+	Dicho esto, podemos ver que, entre 10 y 100 por ejemplo, Floyd-Warshall aumenta su tiempo con un orden de magnitud $O(|V|^3)$, así como Bellman-Ford en $O(|V|^3)$ en el caso ``unitario'' y en $O(|V|^4)$ en el otro caso. A su vez, Dijkstra que debería correr en tiempo $O(|V|^2+|V|.log(|V|))$, vemos que es completamente inferior a lo que se espera teóricamente. La única explicación que encontramos es que, por la particularidad del grafo entero, no nos encontremos en el peor caso y por ello se comporte de una mejor manera, ya que revisando el algoritmo, éste es correcto. Cabe recordar que en este caso, al ser un grafo completo $|A| \cong |V|^2$. Por el tipo de crecimiento de cada algoritmo es que se pudo correr más o menos grafos para cada uno.
 
-	Dicho esto, y viendo los gráficos \ref{fig:fw-bf-d} y \ref{fig:fw-bfu-du}, podemos ver que para resolver el problema, siempre lo más rápido es Dijkstra (Teniendo en cuenta que son todos pesos positivos). Por otro lado, tal como se afirmó en el párrafo anterior, se puede ver en el segundo gráfico que Floyd-Warshall y Bellman-Ford ``unitario'' crecen de la misma manera, mientras que Dijkstra.
+	Dicho esto, y viendo los gráficos \ref{fig:fw-bf-d} y \ref{fig:fw-bfu-du} (En donde los de la derecha son con el eje $y$ en escala logarítmica), podemos ver que para resolver el problema, siempre lo más rápido es Dijkstra (Teniendo en cuenta que son todos pesos positivos). Por otro lado, tal como se afirmó en el párrafo anterior, se puede ver en el segundo gráfico que Floyd-Warshall y Bellman-Ford ``unitario'' crecen de la misma manera, mientras que Dijkstra es extraña y prácticamente lineal.
 
 	Como una conclusión final, podemos decir que si las condiciones son las necesarias, lo mejor a utilizar es Dijkstra, mientras que si existen aristas con peso negativo, lo mejor a utilizar es Floyd-Warshall (Al menos en el caso de grafos completos), ya que performa mejor que Bellman-Ford, y se obtiene más información sobre el grafo.
 
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[scale=0.5]{images/grafico-fw-bf-d.png}
+		\includegraphics[scale=0.4]{images/grafico-fw-bf-d-doble.png}
 		\caption{Floyd Warshall, Bellman-Ford, Dijkstra.}
 		\label{fig:fw-bf-d}
 	\end{figure}
 
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[scale=0.5]{images/grafico-fw-bfu-du.png}
+		\includegraphics[scale=0.4]{images/grafico-fw-bfu-du-doble.png}
 		\caption{Floyd Warshall, Bellman-Ford Unitario, Dijkstra Unitario.}
 		\label{fig:fw-bfu-du}
 	\end{figure}

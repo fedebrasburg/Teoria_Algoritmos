@@ -37,8 +37,9 @@ class Dijkstra(object):
                 padre[ID] = nodo.padre
                 distancia[ID] = nodo.distancia
                 for ID_ady in self.grafo.adyacentes(ID):
-                    nodo_nuevo = Nodo(ID_ady, distancia[ID] + self.grafo.peso_arista(ID, ID_ady), ID)
-                    heapq.heappush(heap, nodo_nuevo)
+                    if distancia[ID] + self.grafo.peso_arista(ID, ID_ady) < distancia[ID_ady]:
+                        nodo_nuevo = Nodo(ID_ady, distancia[ID] + self.grafo.peso_arista(ID, ID_ady), ID)
+                        heapq.heappush(heap, nodo_nuevo)
         return distancia, padre
 
     def resolver_camino_minimo(self, ID):
