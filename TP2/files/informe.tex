@@ -251,7 +251,7 @@
 
 	Dicho esto, podemos ver que, entre 10 y 100 por ejemplo, Floyd-Warshall aumenta su tiempo con un orden de magnitud $O(|V|^3)$, así como Bellman-Ford en $O(|V|^3)$ en el caso ``unitario'' y en $O(|V|^4)$ en el otro caso. A su vez, Dijkstra que debería correr en tiempo $O(|V|^2+|V|.log(|V|))$, vemos que es completamente inferior a lo que se espera teóricamente. La única explicación que encontramos es que, por la particularidad del grafo entero, no nos encontremos en el peor caso y por ello se comporte de una mejor manera, ya que revisando el algoritmo, éste es correcto. Cabe recordar que en este caso, al ser un grafo completo $|A| \cong |V|^2$. Cabe aclarar que por el tipo de crecimiento de cada algoritmo es que se pudo correr más o menos grafos para cada uno.
 
-	Dicho esto, y viendo los gráficos \ref{fig:fw-bf-d} y \ref{fig:fw-bfu-du} (En donde los de la derecha son con el eje de las ordenadas en escala logarítmica), podemos ver que para resolver el problema, siempre lo más rápido es Dijkstra (Teniendo en cuenta que son todos pesos positivos). Por otro lado, tal como se afirmó en el párrafo anterior, se puede ver en el segundo gráfico que Floyd-Warshall y Bellman-Ford ``unitario'' crecen de la misma manera, mientras que Dijkstra es extraña y prácticamente lineal.
+	Dicho esto, y viendo los gráficos \ref{fig:fw-bf-d} y \ref{fig:fw-bfu-du} (En donde los de la derecha son con el eje de las ordenadas en escala logarítmica), podemos ver que para resolver el problema, siempre lo más rápido es Dijkstra (Teniendo en cuenta que son todos pesos positivos). Por otro lado, tal como se afirmó en el párrafo anterior, se puede ver en el segundo gráfico que Floyd-Warshall y Bellman-Ford ``unitario'' crecen de la misma manera, mientras que Dijkstra es extraña y prácticamente lineal (En el caso unitario), tal como se puede observar en el gráfico \ref{fig:dijkstra}.
 
 	Como una conclusión final, podemos decir que si las condiciones son las necesarias, lo mejor a utilizar es Dijkstra, mientras que si existen aristas con peso negativo, lo mejor a utilizar es Floyd-Warshall (Al menos en el caso de grafos completos), ya que performa mejor que Bellman-Ford, y se obtiene más información sobre el grafo.
 
@@ -265,6 +265,12 @@
 		\makebox[\textwidth][c]{\includegraphics[scale=0.4]{images/grafico-fw-bfu-du-doble.png}}
 		\caption{Floyd Warshall, Bellman-Ford Unitario, Dijkstra Unitario.}
 		\label{fig:fw-bfu-du}
+	\end{figure}
+	
+	\begin{figure}[!htb]
+		\makebox[\textwidth][c]{\includegraphics[scale=0.4]{images/grafico-dijkstra-doble.png}}
+		\caption{Dijkstra (Unitario y no).}
+		\label{fig:dijkstra}
 	\end{figure}
 
 \subsection{Cómo correrlo}
