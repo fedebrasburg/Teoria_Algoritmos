@@ -26,7 +26,7 @@ class Dijkstra(object):
             return
         heap = []
         visitado, padre, distancia = self._inicializar_iterador()
-        distancia[ID] = CERO
+        distancia[ID] = CERO  # La distancia a si mismo es 0 
         nodo = Nodo(ID, distancia[ID], padre[ID])
         heapq.heappush(heap, nodo)
         while heap:
@@ -38,7 +38,7 @@ class Dijkstra(object):
                 distancia[ID] = nodo.distancia
                 for ID_ady in self.grafo.adyacentes(ID):
                     nueva_distancia = distancia[ID] + self.grafo.peso_arista(ID, ID_ady)
-                    if nueva_distancia < distancia[ID_ady]:
+                    if nueva_distancia < distancia[ID_ady]: #  Relajamiento
                         nodo_nuevo = Nodo(ID_ady, nueva_distancia, ID)
                         heapq.heappush(heap, nodo_nuevo)
         return distancia, padre
@@ -47,6 +47,7 @@ class Dijkstra(object):
         return self.dijkstra(ID)
 
 class Nodo(object):
+    """Clase auxiliar para representar un vertice con toda la informacion pertenciente al algoritmo"""
     def __init__(self, ID, distancia, padre=None):
         self.ID = ID
         self.distancia = distancia
