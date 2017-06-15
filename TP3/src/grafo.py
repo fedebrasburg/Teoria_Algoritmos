@@ -21,14 +21,16 @@ class Grafo(object):
         """Crea un Grafo dirigido (o no) con aristas pesadas (o no)"""
         self.aristas = {}
         self.vertices = []
-        self.aristas_list = []
 
     def devolver_aristas(self):
         """Devuelve las aristas del grafo"""
         return self.aristas
 
     def devolver_aristas_list(self):
-        return self.aristas_list
+        lista = []
+        for i in self.aristas:
+            lista.extend(self.aristas[i].values())
+        return lista
 
     def devolver_vertices(self):
         return self.vertices
@@ -51,7 +53,6 @@ class Grafo(object):
         """Agrego una arista dirigida entre los nodos con id1 y id2"""
         arista = Arista(id1, id2, peso)
         self.aristas[id1][id2] = arista
-        self.aristas_list.append(arista)
 
     def son_vecinos(self, id1, id2):
         """Devuelve si id1 y id2 son vecinos"""
@@ -67,6 +68,17 @@ class Grafo(object):
         if self.son_vecinos(id1, id2):
             return self.aristas[id1][id2].peso
         raise ValueError
+
+    def borrar_vertice(self, id):
+        del self.vertices[id]
+
+    def borrar_arista_no_dirigida(self, id1, id2):
+        self.borrar_arista_dirigida(id1, id2)
+        self.borrar_arista_dirigida(id2, id1)
+
+    def borrar_arista_dirigida(self, id1, id2):
+        if self.son_vecinos(id1, id2):
+            del self.aristas[id1][id2]
 
     def adyacentes(self, id):
         """Pide un id de un nodo existe y devuelve una lista de los id de sus adyacentes"""
