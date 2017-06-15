@@ -2,10 +2,10 @@ import random
 
 
 def crearDigrafoCompleto(n, nombre):
-    cantVertices = n * (n - 1)
+    cantAristas = n * (n - 1)
     arch = open(nombre, 'w')
     arch.write(str(n) + "\n")
-    arch.write(str(cantVertices) + "\n")
+    arch.write(str(cantAristas) + "\n")
     for i in range(n):
         for j in range(n):
             if i != j:

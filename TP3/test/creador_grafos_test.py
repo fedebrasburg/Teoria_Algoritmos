@@ -1,5 +1,5 @@
 import sys
 sys.path.append('../src')
-from creador_grafos import crearDigrafoCompleto
+from creador_grafos import crearGrafoConexo
 
-crearDigrafoCompleto(4, "../out/grafoPrueba.txt")
+crearGrafoConexo(100, "../out/grafoPrueba.txt")
