@@ -29,7 +29,8 @@ class Grafo(object):
     def devolver_aristas_list(self):
         lista = []
         for i in self.aristas:
-            lista.extend(self.aristas[i].values())
+            for j in self.aristas[i].values():
+                lista += j
         return lista
 
     def devolver_vertices(self):
@@ -52,7 +53,10 @@ class Grafo(object):
     def agregar_arista_dirigida(self, id1, id2, peso=0):
         """Agrego una arista dirigida entre los nodos con id1 y id2"""
         arista = Arista(id1, id2, peso)
-        self.aristas[id1][id2] = arista
+        if id2 in self.aristas[id1]:
+            self.aristas[id1][id2].append(arista)
+        else:
+            self.aristas[id1][id2] = [arista]
 
     def son_vecinos(self, id1, id2):
         """Devuelve si id1 y id2 son vecinos"""
@@ -70,7 +74,8 @@ class Grafo(object):
         raise ValueError
 
     def borrar_vertice(self, id):
-        del self.vertices[id]
+        self.vertices.remove(id)
+        del self.aristas[id]
 
     def borrar_arista_no_dirigida(self, id1, id2):
         self.borrar_arista_dirigida(id1, id2)
