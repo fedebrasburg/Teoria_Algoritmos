@@ -42,3 +42,20 @@ def crearGrafoConexo(n, nombre):
             i += 1
     arch.close()
     return g
+
+def crearGrafoCompleto(n, nombre):
+    g = Grafo()
+    for i in range(n):
+        g.agregar_vertice(i)
+    cantAristas = n * (n - 1) / 2
+    arch = open(nombre, 'w')
+    arch.write(str(n) + "\n")
+    arch.write(str(cantAristas) + "\n")
+    for i in range(n):
+        for j in range(i + 1, n):
+            g.agregar_arista_no_dirigida(i, j)
+            arch.write(str(i) + " " + str(j)+ "\n")  # Crea una arista del vertice i al vertice j
+    arch.close()
+    print 'Vertices:', g.devolver_cant_vertices()
+    print 'Aristas:', len(g.devolver_aristas_list())
+    return g
