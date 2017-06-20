@@ -49,12 +49,12 @@ class Karger(object):
 
 
 if len(sys.argv) != 2:
-    print "Se debe especificar el parametro n como argumento. Correr python karger.py 50, por ejemplo."
+    print "Se debe especificar el parametro n como argumento. Correr python karger.py 10, por ejemplo."
     exit()
 n = int(sys.argv[1])  # Cantidad de vertices
 combinatorio = float(n * (n - 1)) / 2
 corte_minimo = []
-aristas_minimas = 2 * n
+aristas_minimas = 2 * n + 1
 for i in range(int(combinatorio * log(n))):
     k = Karger(n)
     corte, cant_aristas = k.karger()
