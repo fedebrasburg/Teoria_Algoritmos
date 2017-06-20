@@ -55,7 +55,6 @@ n = int(sys.argv[1])  # Cantidad de vertices
 combinatorio = float(n * (n - 1)) / 2
 corte_minimo = []
 aristas_minimas = 2 * n + 1
-print int(combinatorio * log(n))
 for i in range(int(combinatorio * log(n))):
     k = Karger(n)
     corte, cant_aristas = k.karger()
