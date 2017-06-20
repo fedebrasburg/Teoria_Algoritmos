@@ -11,6 +11,9 @@ class SubsetSum(object):
 
     def generar_problema_aleatorio(self, nombre_archivo, n, numMin, numMax):
         listaNumeros = []
+        if (numMin<0) or (numMax<0) or (numMax<numMin):
+            print "Error en los enteros minimos y maximos"
+            return
         for x in range(0, n):
             listaNumeros.append(random.randint(numMin, numMax))
         with open(nombre_archivo, 'wb') as f:
