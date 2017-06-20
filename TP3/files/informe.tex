@@ -60,17 +60,16 @@
 
 
 \section{Algoritmos Randomizados}
-La idea del algoritmo de contracción de Karger es encontrar el corte mínimo en un grafo $G=(V,E)$. Esto es, dos conjuntos no vacíos $A$ y $B$, donde $A \cap B = \varnothing$ y $A \cup B = V$, donde el tamaño del corte $(A,B)$ se define como el número de aristas $e = (u,v)$ con $u \in A$ y $v \in B$, o viceversa y tal que éste sea mínimo.
+La idea del algoritmo de contracción de Karger es encontrar el corte mínimo en un grafo $G=(V,E)$. Esto es, dos conjuntos no vacíos $A$ y $B$, donde $A \cap B = \varnothing$ y $A \cup B = V$. El tamaño del corte $(A,B)$ se define como el número de aristas $e = (u,v)$ con $u \in A$ y $v \in B$, o viceversa y lo que se busca es que éste sea mínimo.
 
 Este algoritmo es un caso de randomización de tipo \textbf{Monte Carlo}, ya que tiene una probabilidad de que el mismo falle en encontrar la solución correcta.
 
 El algoritmo de contracción en sí consiste en elegir una arista $e=(u,v)$ al azar, y “fusionar” los vértices creando un \textit{supernodo}, el cual tiene tiene todas las aristas de $u$ y $v$ (Salvo la arista entre ellos). Es importante recalcar que el grafo debe permitir múltiples aristas entre dos vértices, ya que al fusionar es importante que se mantengan la cantidad de aristas (Nuevamente, salvo la que es entre $u$ y $v$). Este proceso se debe repetir hasta que el grafo sólo conste de 2 vértices (Notar que en cada ``iteración'' eliminamos un nodo), los cuales se corresponderán con el corte $(A,B)$, y la cantidad de aristas en el grafo será el tamaño del mismo.
 
-Lo más interesante de esto es que su probabilidad de falla es relativamente alta, pero puede ser reducida ampliamente mediante múltiples (en cantidad polinomial) corridas. Yendo a los números, la probabilidad de que el algoritmo sea correcto con una única corrida es de al menos $\frac{1}{\binom{n}{2}}$ (con $n = |V|$), lo cual para un $n$ grande es un número muy chico (Es decir, su probabilidad de falla es como mucho $1 - \frac{1}{\binom{n}{2}}$). Pero si el mismo se corre $\binom{n}{2}$ veces, se reduce a que se puede fallar en encontrar el corte mínimo con una probabilidad $(1 - \frac{1}{\binom{n}{2}})^{\binom{n}{2}} \leq \frac{1}{e}$. Aún más, si se corre $\binom{n}{2}*\ln n$ veces, esta probabilidad desciende a $e^{-\ln n} = \frac{1}{n}$, lo cual es más que aceptable para un $n$ grande.
+Lo más interesante de esto es que su probabilidad de falla es relativamente alta, pero puede ser reducida ampliamente mediante múltiples (en cantidad polinomial) corridas. Yendo a los números, la probabilidad de que el algoritmo sea correcto con una única corrida es de al menos ${\binom{n}{2}}^{-1}$ (con $n = |V|$), lo cual para un $n$ grande es un número muy chico (Es decir, su probabilidad de falla es como mucho $1 - {\binom{n}{2}}^{-1}$). Pero si el mismo se corre $\binom{n}{2}$ veces, se reduce a que se puede fallar en encontrar el corte mínimo con una probabilidad $(1 - {\binom{n}{2}}^{-1})^{\binom{n}{2}} \leq \frac{1}{e}$. Aún más, si se corre $\binom{n}{2}*\ln n$ veces, esta probabilidad desciende a $e^{-\ln n} = \frac{1}{n}$, lo cual es más que aceptable para un $n$ grande.
 
 \subsection{Cómo correrlo}
 Correr el algoritmo con una instancia del grafo con $n$ vértices y $2*n$ aristas es tan simple como correr \texttt{python karger.py n} desde la carpeta \texttt{src} del proyecto.
-
 
 \section{Algoritmos Aproximados}
 
@@ -99,13 +98,13 @@ Correr el algoritmo con una instancia del grafo con $n$ vértices y $2*n$ arista
 \lstset{ title=pg.py }
 \lstinputlisting{../src/pg.py}
 
-\lstset{ title=pg_test.py }
+\lstset{ title=pg\_test.py }
 \lstinputlisting{../src/pg_test.py}
 
-\lstset{ title=subsetSum.py }
-\lstinputlisting{../src/subsetSum.py}
+\lstset{ title=subset\_sum.py }
+\lstinputlisting{../src/subset_sum.py}
 
-\lstset{ title=subsetSum_test.py }
-\lstinputlisting{../src/subsetSum_test.py}
+\lstset{ title=subset\_sum\_test.py }
+\lstinputlisting{../src/subset_sum_test.py}
 
 \end{document}

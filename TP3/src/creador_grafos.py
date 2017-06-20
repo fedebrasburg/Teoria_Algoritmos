@@ -3,7 +3,6 @@ from grafo import Grafo
 
 
 # Crea un grafo de n vertices y 2*n aristas, junto con el archivo correspondiente
-# La creacion del archivo podria ser opcional
 # Importante: No correr el algoritmo para n <= 4, ya que para esos n, 2*n > n*(n-1)/2
 # (Aristas en grafo completo), por lo que no existe grafo posible con n vertices y 2*n aristas
 def crearGrafoConexo(n, nombre):
@@ -43,6 +42,7 @@ def crearGrafoConexo(n, nombre):
     arch.close()
     return g
 
+# Crea un grafo completo con n vertices, junto con el archivo correspondiente
 def crearGrafoCompleto(n, nombre):
     g = Grafo()
     for i in range(n):
@@ -56,6 +56,4 @@ def crearGrafoCompleto(n, nombre):
             g.agregar_arista_no_dirigida(i, j)
             arch.write(str(i) + " " + str(j)+ "\n")  # Crea una arista del vertice i al vertice j
     arch.close()
-    print 'Vertices:', g.devolver_cant_vertices()
-    print 'Aristas:', len(g.devolver_aristas_list())
     return g

@@ -10,21 +10,21 @@ import sys
 
 class Karger(object):
     def __init__(self, n):
-        path = "../out/grafoKarger.txt"
+        path = '../out/grafoKarger.txt'
         # Verifico que el archivo, si ya esta creado, sea de la misma cantidad de nodos
         if isfile(path) and int(open(path).readline()) == n:
             p = Parser()
             self.grafo = p.leer_grafo_no_dirigido(path)
         else:
-            # self.grafo = crearGrafoConexo(n, path)
-            self.grafo = crearGrafoCompleto(n, path)
+            self.grafo = crearGrafoConexo(n, path)
+            # self.grafo = crearGrafoCompleto(n, path)
         # Aca se guardara el set al que pertenezcan
         self.corte = {i: [i] for i in range(self.grafo.devolver_cant_vertices())}
 
     def contraer(self, id1, id2):
-        for destino, arista in self.grafo.devolver_aristas()[id2].items():
+        for destino, aristas in self.grafo.devolver_aristas()[id2].items():
             # Me fijo que cantidad de aristas hay entre ellos
-            cantidad_aristas = len(self.grafo.devolver_aristas()[id2][destino])
+            cantidad_aristas = len(aristas)
             # Borro las aristas originales del grafo
             self.grafo.borrar_arista_no_dirigida(id2, destino)
             # Si la arista a agregar no es una arista entre id1 e id2, agrego tantas como saque
@@ -49,16 +49,18 @@ class Karger(object):
 
 
 if len(sys.argv) != 2:
-    print "Se debe especificar el parametro n como argumento. Correr python karger.py 10, por ejemplo."
+    print 'Se debe especificar el parametro n como argumento. Correr python karger.py 10, por ejemplo.'
     exit()
 n = int(sys.argv[1])  # Cantidad de vertices
 combinatorio = float(n * (n - 1)) / 2
 corte_minimo = []
 aristas_minimas = 2 * n + 1
+print int(combinatorio * log(n))
 for i in range(int(combinatorio * log(n))):
     k = Karger(n)
     corte, cant_aristas = k.karger()
     if cant_aristas < aristas_minimas:
         aristas_minimas = cant_aristas
         corte_minimo = corte
-print "El corte minimo encontrado es con", str(aristas_minimas), "con probabilidad al menos", str(1 - (1 / float(n))), "siendo el corte", corte_minimo
+print 'El corte minimo encontrado es con', str(aristas_minimas), 'con probabilidad al menos', str(1 - (1 / float(n))),\
+    'siendo el corte', corte_minimo
