@@ -16,8 +16,6 @@
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage{amssymb}
-\usepackage{amsmath}
-
 
 
 % Título principal del documento.`
@@ -65,30 +63,38 @@ La idea del algoritmo de contracción de Karger es encontrar el corte mínimo en
 
 Este algoritmo es un caso de randomización de tipo \textbf{Monte Carlo}, ya que tiene una probabilidad de que el mismo falle en encontrar la solución correcta.
 
-El algoritmo de contracción en sí consiste en elegir una arista $e=(u,v)$ al azar, y “fusionar” los vértices creando un \textit{supernodo}, el cual tiene tiene todas las aristas de $u$ y $v$ (Salvo la arista entre ellos). Es importante recalcar que el grafo debe permitir múltiples aristas entre dos vértices, ya que al fusionar es importante que se mantengan la cantidad de aristas (Nuevamente, salvo la que es entre $u$ y $v$). Este proceso se debe repetir hasta que el grafo sólo conste de 2 vértices (Notar que en cada ``iteración'' eliminamos un nodo), los cuales se corresponderán con el corte $(A,B)$, y la cantidad de aristas en el grafo será el tamaño del mismo.
+El algoritmo de contracción en sí consiste en elegir una arista $e=(u,v)$ al azar, y “fusionar” los vértices creando un \textit{supernodo}, el cual tiene tiene todas las aristas de $u$ y $v$ (Salvo la/s arista/s entre ellos). Es importante recalcar que el grafo debe permitir múltiples aristas entre dos vértices, ya que al fusionar es importante que se mantengan la cantidad de aristas (Nuevamente, salvo las que son entre $u$ y $v$). Este proceso se debe repetir hasta que el grafo sólo conste de 2 vértices (Notar que en cada ``iteración'' eliminamos un nodo), los cuales se corresponderán con el corte $(A,B)$, y la cantidad de aristas en el grafo será el tamaño del mismo.
 
-Lo más interesante de esto es que su probabilidad de falla es relativamente alta, pero puede ser reducida ampliamente mediante múltiples (en cantidad polinomial) corridas. Yendo a los números, la probabilidad de que el algoritmo sea correcto con una única corrida es de al menos ${\binom{n}{2}}^{-1}$ (con $n = |V|$), lo cual para un $n$ grande es un número muy chico (Es decir, su probabilidad de falla es como mucho $1 - {\binom{n}{2}}^{-1}$). Pero si el mismo se corre $\binom{n}{2}$ veces, se reduce a que se puede fallar en encontrar el corte mínimo con una probabilidad $(1 - {\binom{n}{2}}^{-1})^{\binom{n}{2}} \leq \frac{1}{e}$. Aún más, si se corre $\binom{n}{2}*\ln n$ veces, esta probabilidad desciende a $e^{-\ln n} = \frac{1}{n}$, lo cual es más que aceptable para un $n$ grande.
+Lo más interesante de esto es que su probabilidad de falla es relativamente alta, pero puede ser reducida ampliamente mediante múltiples (en cantidad polinomial) corridas. Yendo a los números, la probabilidad de que el algoritmo sea correcto con una única corrida es de al menos ${\binom{n}{2}}^{-1}$ (con $n = |V|$), lo cual para un $n$ grande es un número muy chico (Es decir, su probabilidad de falla es como mucho $1 - {\binom{n}{2}}^{-1}$). Pero si el mismo se corre $\binom{n}{2}$ veces, se reduce a que se puede fallar en encontrar el corte mínimo con una probabilidad:
+\begin{equation}
+	\label{eq:prob}
+	(1 - {\binom{n}{2}}^{-1})^{\binom{n}{2}} \leq \frac{1}{e} \tag{2.1}
+\end{equation}
+
+Aún más, si se corre $\binom{n}{2}*\ln n$ veces, la probabilidad en \ref{eq:prob} desciende a $e^{-\ln n} = \frac{1}{n}$, lo cual es más que aceptable para un $n$ grande.
 
 \subsection{Cómo correrlo}
 Correr el algoritmo con una instancia del grafo con $n$ vértices y $2*n$ aristas es tan simple como correr \texttt{python karger.py n} desde la carpeta \texttt{src} del proyecto.
 
 \section{Algoritmos Aproximados}
-El objetivo del algoritmo es resolver el problema de optimizacion de subset-sum,dado un set de enteros positivos y t un entero positivo, encontrar la suma mas grande de enteros del set menor a t. 
+El objetivo del algoritmo es resolver el problema de optimización de Subset Sum: dado un set de enteros positivos y $t$ un entero positivo, encontrar la suma más grande de enteros del set que sea menor a $t$.
 
-La idea del algoritmo aproximado , de tiempo polinomial, viene del algoritmo que lo resuelve de manera exacta ,en tiempo exponencial. Este mismo surge de una idea de fuerza bruta , calcular la suma de todos los subset y luego elegir el mas cercano a t. Pero el algoritmo exacto lo hace de manera mas inteligente, para calcular la suma de todos los subsets ${x_1,...,x_i}$, utiliza la suma de todos los subsets${x_1,...,x_{i-1}}$ , tambien si se da cuenta que la suma de un cierto subset da mas de t lo elimina . En resumen el algoritmo exacto toma un subset $S={x_1,...,x_n}$ y el entero $t$ , luego va calculando $L_i$ , la lista de todos los subsets de ${x_1,...,x_i}$ que no superan $t$, termina devolviendo el valor mas alto de $L_n$.
+La idea del algoritmo aproximado de tiempo polinomial viene del algoritmo que lo resuelve de manera exacta, que lo hace en tiempo exponencial. Este mismo surge de una suerte de fuerza bruta, es decir, de calcular la suma de todos los subsets y luego elegir el más cercano a $t$. Pero el algoritmo exacto lo hace de manera más inteligente, ya que para calcular la suma de todos los subsets ${x_1,...,x_i}$, utiliza la suma de todos los subsets ${x_1,...,x_{i-1}}$, y también si se da cuenta que la suma de un cierto subset da mas que $t$, lo elimina. En resumen, el algoritmo exacto toma un subset $S={x_1,...,x_n}$ y el entero $t$, luego va calculando $L_i$ que es la lista de todos los subsets de ${x_1,...,x_i}$ que no superan $t$, y termina devolviendo el valor más alto de $L_n$.
 
-Este algoritmo es exacto pero muy costoso, buscando una solucion lo suficientemente buena y menos costosa podemos usar el aproximado de tiempo polinomial. Este algoritmo ataca el problema de que calcular $L_i$ en cada paso es muy costoso, lo resuelve recortando (trimming) cada lista $L$ luego de crearla. Usando la idea de que si hay 2 valores muy cercanos en la lista no vale la pena mantenerlos a ambos. Utilizando un parametro $\delta$ de recorte , recorta todos los elemento $y$ tal que existe $z$ en la $L'$ recortada tal que : \begin{equation}
-	\label{sec:delta}
- \dfrac{y} {1+\delta} \leq z \leq y \tag{3.1}
+Este algoritmo es exacto pero muy costoso. Buscando una solución lo suficientemente buena y menos costosa podemos usar el aproximado de tiempo polinomial. Este algoritmo ataca el problema de que calcular $L_i$ en cada paso es muy costoso, y lo resuelve recortando (\textit{trimming}) cada lista $L$ luego de crearla. Usa la idea de que si hay 2 valores muy cercanos en la lista no vale la pena mantenerlos a ambos. Utilizando un parámetro $\delta$ de recorte, recorta todos los elementos $y$ tal que existe $z$ en la $L'$ recortada de manera que:
+\begin{equation}
+	\label{eq:delta}
+	\dfrac{y} {1+\delta} \leq z \leq y \tag{3.1}
 \end{equation}
-Este metodo se basa en que se puede quitar muchos elemento sin que ellos queden sin ser representados en la lista recortada. El metodo de recortar la lista $L$ en $\Theta(|L|)$ , es usando la lista ordenada, agarra el primer elemento y luego va agregando los elementos mas grandes mientras no cumpla \ref{sec:delta}, la lista final es $L'$.
 
-El algoritmo polinomico, funciona igual que el exacto pero utiliza el algoritmo de recorte luego de calcular $L_i$, que se calcula con un parametro de aproximacion $0 < \epsilon < 1$ que se usa para calcular $\delta = \dfrac{\epsilon} {2n}$ siendo $n=|S|$.
+Este método se basa en que se pueden quitar muchos elementos sin que ellos queden sin ser representados en la lista recortada. El metodo de recortar la lista $L$ en $\Theta(|L|)$, es usando la lista ordenada, donde agarra el primer elemento y luego va agregando los elementos más grandes mientras no cumpla \ref{eq:delta}. Finalmente, la lista es $L'$.
 
-
+En resumen, el algoritmo polinómico funciona igual que el exacto pero utiliza el algoritmo de recorte luego de calcular $L_i$, que se calcula utilizando un parámetro de aproximación $0 < \epsilon < 1$ que se usa para calcular $\delta = \dfrac{\epsilon} {2n}$ siendo $n=|S|$.
 
 \subsection{Cómo correrlo}
- Se puede crear un problema aleatorio con el metodo $generar_problema_aleatorio$ con el nombre de archivo a generar, el tamaño $n$ del subset y dos enteros entre los cuales se generan los valores del subset .Para resolver el problema pasando  el nombre de archivo con el nombre del archivo generado, un $t$ y un parametro $\epsilon$ de aproximacion
+Se puede crear un problema aleatorio con el método \texttt{generar\_problema\_aleatorio} de la clase \texttt{SubsetSum}, pasando el nombre del archivo a generar, el tamaño $n$ del subset y dos enteros entre los cuales se generan los valores del subset.
+
+Para resolver el problema, se puede utilizar el método \texttt{resolver\_problema} de la misma clase, pasando el nombre del archivo generado, un $t$ y un parametro $\epsilon$ de aproximación.
 
 \pagebreak
 

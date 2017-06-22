@@ -11,7 +11,7 @@ class SubsetSum(object):
 
     def generar_problema_aleatorio(self, nombre_archivo, n, numMin, numMax):
         listaNumeros = []
-        if (numMin<0) or (numMax<0) or (numMax<numMin):
+        if (numMin < 0) or (numMax < 0) or (numMax < numMin):
             print "Error en los enteros minimos y maximos"
             return
         for x in range(0, n):
@@ -32,7 +32,7 @@ class SubsetSum(object):
                 last = listaNumeros[i]
         return nuevaListaNumeros
 
-    def resolverProblema(self, nombre_archivo, t, e):
+    def resolver_problema(self, nombre_archivo, t, e):
         listaNumeros = self.levantar_problema(nombre_archivo)
         if not listaNumeros:
             return
@@ -40,8 +40,8 @@ class SubsetSum(object):
         L = range(0, n + 1)
         L[0] = [0]
         for i in range(1, n):
-            nuevalista = map(lambda x: x + listaNumeros[i - 1], L[i - 1])
-            L[i] = list(set(L[i - 1] + nuevalista))
+            nuevaLista = map(lambda x: x + listaNumeros[i - 1], L[i - 1])
+            L[i] = list(set(L[i - 1] + nuevaLista))
             L[i] = self.recortar_lista(L[i], e / (2 * n))
             L[i] = [j for j in L[i] if j <= t]
         L[n] = sorted(L[n - 1])
