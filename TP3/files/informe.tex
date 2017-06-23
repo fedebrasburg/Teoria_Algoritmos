@@ -53,9 +53,26 @@
 
 \clearpage
 \section{Programación Dinámica}
+El problema propuesto es similar al de encontrar el minimo y maximo elemento en un array de números con la restricción de que el mínimo este antes que el máximo.
+El algoritmo lo que hace es parte de la base de que se compra y vende el primer dia y guarda el mínimo Actual. Avanzando en los días, si el dia en el que se este da un beneficio comprando en dicho dia mayor a lo que ya se compró y vendió, cambia y pasa a comprar en este dia y a vender en el del mínimo Actual, si no es así, sigue. Si el precio del día actual es menor al mínimo Actual, entonces es un potencial dia de venta y actualiza el mínimo Actual.
+ 
+La ecuación de recurrencia sería algo así:
+\begin{equation}
+	\label{eq:pg}
+	S_{i+1}={ max{S_i,k[i+1] - minActual_i}}
+	\tag{1.1}
+\end{equation}
+\begin{description}
+  \item[$\bullet$] En cada Si se guarda el mínimo y máximo que dan esta diferencia (siendo Si la diferencia máxima).
+  \item[$\bullet$] k es el array con los valores de compra/venta.
+\end{description}
+
+
 
 
 \subsection{Cómo correrlo}
+
+Para resolver el problema, se puede utilizar el script	 ${pg.py} $, tambien se pueden ver las pruebas realizadas en $ pg\_test.py$
 
 
 \section{Algoritmos Randomizados}
