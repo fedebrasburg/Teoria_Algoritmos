@@ -54,7 +54,8 @@
 \clearpage
 \section{Programación Dinámica}
 El problema propuesto es similar al de encontrar el mínimo y máximo elemento en un array de números con la restricción de que el mínimo esté antes que el máximo.
-El algoritmo parte de la base de que se compra y se vende el primer día, y guarda el \textit{mínimo actual}. Avanzando en los días, si comprando en el día en el que se está da un beneficio mayor a lo que ya se compró y vendió, cambia y pasa a comprar en este día y a vender en el del \textit{mínimo actual}; si no es así, sigue. Si el precio del día actual es menor al \textit{mínimo actual}, entonces es un potencial día de venta y se actualiza el \textit{mínimo actual}.
+
+El algoritmo parte de la base de que se compra y se vende el primer día (Es decir, se empieza con una ganancia igual a 0), y guarda el \textit{mínimo actual}. Avanzando en los días, si vendiendo en el día en el que se está da un beneficio mayor a lo que ya se compró y vendió, cambia y pasa a vender en este día y a comprar en el del \textit{mínimo actual}; si no es así, sigue. Si el precio del día actual es menor al \textit{mínimo actual}, entonces es un potencial día de compra y se actualiza el \textit{mínimo actual}.
  
 La ecuación de recurrencia sería algo así:
 \begin{equation}
