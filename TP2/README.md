@@ -30,7 +30,7 @@ Escribir el pseudocódigo de un algoritmo que resuelva cada uno de los siguiente
 
 ### Algoritmos de camino mínimo
 
-Un grupo de conocidos inversores ha logrado modelar un dinámico sistema financiero usando un grafo dirigido. En este los vértices son modelados como monedas y sus aristas por unos valores relacionados a las tasas de cambio entre ellas, de manera tal que el camino mínimo entre dos monedas represente la manera óptima de cambiar dinero de una en otra.[1]
+Un grupo de conocidos inversores ha logrado modelar un dinámico sistema financiero usando un grafo dirigido. En este los vértices son modelados como monedas y sus aristas por unos valores relacionados a las tasas de cambio entre ellas, de manera tal que el camino mínimo entre dos monedas represente la manera óptima de cambiar dinero de una en otra.[1][1]
 
 Dado que el conocimiento de estos financistas sobre algoritmia es limitado, acuden a estudiantes de Teoría de Algoritmos I para asesoramiento.
 
@@ -62,7 +62,6 @@ Se recomienda implementar un TAD Grafo inmutable de funcionalidad mínima, y en 
 El TAD Grafo mantendrá la mínima representación necesaria del grafo. En cuanto a los algoritmos, se recomienda realizar todo el trabajo de cada algoritmo en su propio constructor cuando corresponda (así, una vez inicializado, es inmutable y se convierte en un objeto de solo-consulta).
 
 Como ejemplo en Python, el TAD Grafo podría plantearse así:
-    
 ```python
 class Digraph:
   """Grafo dirigido con un número fijo de vértices.
@@ -110,11 +109,11 @@ class Digraph:
         • e.dst
     """
     
-    class Edge:
-      """Arista de un grafo.
-      """
-      def __init__(self, src, dst):
-        ...
+class Edge:
+  """Arista de un grafo.
+  """
+  def __init__(self, src, dst):
+    ...
 ```    
 
 Como ejemplo en Java, los algoritmos podrían representarse así:
