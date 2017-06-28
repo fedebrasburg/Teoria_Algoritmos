@@ -86,101 +86,97 @@ Se recomienda implementar un TAD Grafo inmutable de funcionalidad mínima, y en 
 El TAD Grafo mantendrá la mínima representación necesaria del grafo. En cuanto a los algoritmos, se recomienda realizar todo el trabajo de cada algoritmo en su propio constructor (así, una vez inicializado, es inmutable y se convierte en un objeto de solo-consulta).
 
 Como ejemplo en Python, el TAD Grafo podría plantearse así:
+```python
+class Digraph:
+  """Grafo dirigido con un número fijo de vértices.
     
+  Los vértices son siempre números enteros no negativos. El primer vértice es 0.
     
-    class Digraph:
-      """Grafo dirigido con un número fijo de vértices.
+  El grafo se crea vacío, se añaden las aristas con add_edge(). Una vez
+  creadas, las aristas no se pueden eliminar, pero siempre se pueden añadir
+  nuevas aristas.
+  """
+  def __init__(g, V):
+    """Construye un grafo sin aristas de V vértices.
+    """
     
-      Los vértices son siempre números enteros no negativos. El primer vértice
-      es 0.
+  def V(g):
+    """Número de vértices en el grafo.
+    """
     
-      El grafo se crea vacío, se añaden las aristas con add_edge(). Una vez
-      creadas, las aristas no se pueden eliminar, pero siempre se pueden añadir
-      nuevas aristas.
-      """
-      def __init__(g, V):
-        """Construye un grafo sin aristas de V vértices.
-        """
+  def E(g):
+    """Número de aristas en el grafo.
+    """
     
-      def V(g):
-        """Número de vértices en el grafo.
-        """
+  def adj_e(g, v):
+    """Itera sobre los aristas incidentes _desde_ v.
+    """
     
-      def E(g):
-        """Número de aristas en el grafo.
-        """
+  def adj(g, v):
+    """Itera sobre los vértices adyacentes a 'v'.
+    """
     
-      def adj_e(g, v):
-        """Itera sobre los aristas incidentes _desde_ v.
-        """
+  def add_edge(g, u, v):
+    """Añade una arista al grafo.
+    """
     
-      def adj(g, v):
-        """Itera sobre los vértices adyacentes a 'v'.
-        """
+  def __iter__(g):
+    """Itera de 0 a V."""
+    return iter(range(g.V()))
     
-      def add_edge(g, u, v):
-        """Añade una arista al grafo.
-        """
+  def iter_edges(g):
+    """Itera sobre todas las aristas del grafo.
     
-      def __iter__(g):
-        """Itera de 0 a V."""
-        return iter(range(g.V()))
+    Las aristas devueltas tienen los siguientes atributos de solo lectura:
     
-      def iter_edges(g):
-        """Itera sobre todas las aristas del grafo.
+        • e.src
+        • e.dst
+    """
     
-        Las aristas devueltas tienen los siguientes atributos de solo lectura:
-    
-            • e.src
-            • e.dst
-        """
-    
-    class Edge:
-      """Arista de un grafo.
-      """
-      def __init__(self, src, dst):
-        ...
-    
+class Edge:
+  """Arista de un grafo.
+  """
+  def __init__(self, src, dst):
+    ...
+```    
 
 Como ejemplo en Java, los algoritmos podrían representarse así:
     
+```java    
+public interface ShortestPathAlgorithm {
+
+    /**
+     * Devuelve el camino mínimo entre dos vértices del grafo.
+     *
+     * @param   srcId   el id del vértice de origen.
+     * @param   destId  el id del vértice de destino.
+     * @return  una lista con los vértices que conforman el camino, incluyendo
+     *          el origen y el destino.
+     * @throws IllegalArgumentException si algún id de vértice es inválido.
+     */
+    public List getShortestPath(int src, int dest);
     
-    public class Kosaraju {
+}
+
+public class Dijkstra implements ShortestPathAlgorithm {
+
+    public Dijkstra(Digraph d) { /* ... */ }
     
-        private List> stronglyConnectedComponents;
-    
-        public Kosaraju(Digraph d) { /* ... */ }
-    
-        /**
-         * Devuelve el número de componentes fuertemente conexas del grafo.
-         * @return  El número de componentes fuertemente conexas.
-         */
-        public int getSCCNumber() { /* ... */ }
-    
-        /**
-         * Devuelve un conjunto de vértices que pertenecen a la componente fuertemente
-         *     conexa cuyo número es pasado por parámetro.
-         * @param sccId   El número de componente fuertemente conexa.
-         * @return        El conjunto de vértices que forman parte de la componente.
-         * @throws IllegalArgumentException si no se cumple que {@code 0 <= sccId < getSCCNumber()}
-         */
-        public Set getMembersOfSCC(int sccId) { /* ... */ }
-    
-    }
-    
-    public class Tarjan {
-    
-        private Set articulationPoints;
-    
-        public Tarjan(Graph g) { /* ... */ }
-    
-        /**
-         * Devuelve el conjunto de vértices que son puntos de articulación del grafo.
-         * @return   El conjunto de vértices que son puntos de articulación.
-         */
-        public Set getArticulationPoints()  { /* ... */ }
-    }
-    
+    /**
+     * Aplica el algoritmo de Dijkstra para obtener el camino mínimo entre dos
+     * vértices del grafo.
+     *
+     * @param   srcId   el id del vértice de origen.
+     * @param   destId  el id del vértice de destino.
+     * @return  una lista con los vértices que conforman el camino, incluyendo
+     *          el origen y el destino.
+     * @throws IllegalArgumentException si algún id de vértice es inválido.
+     */
+    @Override
+    public List getShortestPath(int src, int dest) { /* ... */ }
+
+}
+```
 
 [1]: https://drive.google.com/drive/folders/0B0x0VPz_v-f_ZWJTdmVZcG9vY0k
 [2]: https://drive.google.com/drive/folders/0B0x0VPz_v-f_MDdldkduZ3BwSDA
