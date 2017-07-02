@@ -53,27 +53,24 @@
 
 \clearpage
 \section{Programación Dinámica}
-El problema propuesto es similar al de encontrar el minimo y maximo elemento en un array de números con la restricción de que el mínimo este antes que el máximo.
-El algoritmo lo que hace es parte de la base de que se compra y vende el primer dia y guarda el mínimo Actual. Avanzando en los días, si el dia en el que se este da un beneficio comprando en dicho dia mayor a lo que ya se compró y vendió, cambia y pasa a comprar en este dia y a vender en el del mínimo Actual, si no es así, sigue. Si el precio del día actual es menor al mínimo Actual, entonces es un potencial dia de venta y actualiza el mínimo Actual.
+El problema propuesto es similar al de encontrar el mínimo y máximo elemento en un array de números con la restricción de que el mínimo esté antes que el máximo.
+
+El algoritmo parte de la base de que se compra y se vende el primer día (Es decir, se empieza con una ganancia igual a 0), y guarda el \textit{mínimo actual}. Avanzando en los días, si vendiendo en el día en el que se está da un beneficio mayor a lo que ya se compró y vendió, cambia y pasa a vender en este día y a comprar en el del \textit{mínimo actual}; si no es así, sigue. Si el precio del día actual es menor al \textit{mínimo actual}, entonces es un potencial día de compra y se actualiza el \textit{mínimo actual}.
  
 La ecuación de recurrencia sería algo así:
 \begin{equation}
 	\label{eq:pg}
-	S_{i+1}={ max{S_i,k[i+1] - minActual_i}}
+	S_{i+1}=\{max\{S_i,k[i+1] - minActual_i\}\}
 	\tag{1.1}
 \end{equation}
+Donde:
 \begin{description}
-  \item[$\bullet$] En cada Si se guarda el mínimo y máximo que dan esta diferencia (siendo Si la diferencia máxima).
-  \item[$\bullet$] k es el array con los valores de compra/venta.
+  \item[$\bullet$] En cada $S_i$ se guarda el mínimo y máximo que dan esta diferencia (siendo $S_i$ la diferencia máxima).
+  \item[$\bullet$] $k$ es el array con los valores de compra/venta.
 \end{description}
 
-
-
-
 \subsection{Cómo correrlo}
-
-Para resolver el problema, se puede utilizar el script	 ${pg.py} $, tambien se pueden ver las pruebas realizadas en $ pg\_test.py$
-
+Para correr el algoritmo basta con importar la función \texttt{compraVenta} del archivo \texttt{pg.py}, y utilizarla pasándole un array con los números. Dentro del archivo \texttt{pg\_test.py} se puede ver un ejemplo de esto, donde se verifica que el resultado sea correcto comparándolo con el resultado de un algoritmo cuadrático.
 
 \section{Algoritmos Randomizados}
 La idea del algoritmo de contracción de Karger es encontrar el corte mínimo en un grafo $G=(V,E)$. Esto es, dos conjuntos no vacíos $A$ y $B$, donde $A \cap B = \varnothing$ y $A \cup B = V$. El tamaño del corte $(A,B)$ se define como el número de aristas $e = (u,v)$ con $u \in A$ y $v \in B$, o viceversa y lo que se busca es que éste sea mínimo.
