@@ -16,13 +16,13 @@ class SubsetSum(object):
             return
         for x in range(0, n):
             listaNumeros.append(random.randint(numMin, numMax))
-        with open(nombre_archivo, 'wb') as f:
+	listaNumeros = sorted(listaNumeros)        
+	with open(nombre_archivo, 'wb') as f:
             pickle.dump(listaNumeros, f)
 
     def recortar_lista(self, listaNumeros, d):
         if not listaNumeros:
             return
-        listaNumeros = sorted(listaNumeros)
         n = len(listaNumeros)
         last = listaNumeros[0]
         nuevaListaNumeros = [listaNumeros[0]]
@@ -44,6 +44,6 @@ class SubsetSum(object):
             L[i] = list(set(L[i - 1] + nuevaLista))
             L[i] = self.recortar_lista(L[i], e / (2 * n))
             L[i] = [j for j in L[i] if j <= t]
-        L[n] = sorted(L[n - 1])
+        L[n] = L[n - 1]
         z = L[-1][-1]
         return z
