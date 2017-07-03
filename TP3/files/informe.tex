@@ -81,11 +81,21 @@ El algoritmo de contracción en sí consiste en elegir una arista $e=(u,v)$ al a
 
 Lo más interesante de esto es que su probabilidad de falla es relativamente alta, pero puede ser reducida ampliamente mediante múltiples (en cantidad polinomial) corridas. Yendo a los números, la probabilidad de que el algoritmo sea correcto con una única corrida es de al menos ${\binom{n}{2}}^{-1}$ (con $n = |V|$), lo cual para un $n$ grande es un número muy chico (Es decir, su probabilidad de falla es como mucho $1 - {\binom{n}{2}}^{-1}$). Pero si el mismo se corre $\binom{n}{2}$ veces, se reduce a que se puede fallar en encontrar el corte mínimo con una probabilidad:
 \begin{equation}
-	\label{eq:prob}
-	(1 - {\binom{n}{2}}^{-1})^{\binom{n}{2}} \leq \frac{1}{e} \tag{2.1}
+	\label{eq:prob1}
+	\tag{2.1}
+	(1 - {\binom{n}{2}}^{-1})^{\binom{n}{2}} \leq \frac{1}{e}
 \end{equation}
 
-Aún más, si se corre $\binom{n}{2}*\ln n$ veces, la probabilidad en \ref{eq:prob} desciende a $e^{-\ln n} = \frac{1}{n}$, lo cual es más que aceptable para un $n$ grande.
+Aún más, si se corre $\binom{n}{2}*\ln n$ veces, la probabilidad en \ref{eq:prob1} desciende a $e^{-\ln n} = \frac{1}{n}$, lo cual es más que aceptable para un $n$ grande.
+
+El problema de esta solución es que su tiempo de corrida es $O(n^4*\log n)$. Es por ello que se plantea una alternativa un tanto más rápida, que corre en $O(n^2*\log^3 n)$. Ésta se basa en que a medida que el grafo se achica, la probabilidad de contraer una arista que pertenece al corte mínimo aumenta. Para solucionar esto, el algoritmo se corre en 2 fases: la \textit{segura} y la \textit{peligrosa}. En la primera se contrae el grafo pasando de $n$ vértices a $n / \sqrt{2} + 1$, donde la probabilidad de que ninguna de estas contracciones toque el corte mínimo es de al menos $\frac{1}{2}$. La segunda fase se corre 2 veces y de forma recursiva (Hasta que el grafo tenga 8 vértices o menos, cuando pasa a usarse \textit{fuerza bruta}), para obtener 2 resultados distintos y quedarse con el de menor valor. De esta manera, la probabilidad de que este algoritmo devuelva el resultado correcto es:
+\begin{equation}
+	\label{eq:prob2}
+	\tag{2.2}
+	P(n) \geq 1 - (1 - \frac{1}{2} P(\frac{n}{\sqrt{2}} + 1))^2
+\end{equation}
+
+Donde en \ref{eq:prob2}, $P(n) = \Omega(1 / \log n) \geq \alpha / \ln n$, para $\alpha > 2$. Y nuevamente, si se corre múltiples veces, por ejemplo $c*\ln^2 n$ (Siendo $c$ constante), la probabilidad de éxito es al menos $1 - \frac{1}{n^{c/\alpha}}$, con lo que modificando $c$ se puede cambiar esta probabilidad a un número arbitrariamente grande.
 
 \subsection{Cómo correrlo}
 Correr el algoritmo con una instancia del grafo con $n$ vértices y $2*n$ aristas es tan simple como correr \texttt{python karger.py n} desde la carpeta \texttt{src} del proyecto.
